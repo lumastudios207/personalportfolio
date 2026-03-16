@@ -1,0 +1,18 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const work = await getCollection("work");
+  return work.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+---
+
+<BaseLayout title={`${entry.data.company} — Ivan Annikov`}>
+  <!-- Case study page: Nav, Hero, Pull Quote, Work Sections, Project Nav, Footer -->
+</BaseLayout>
