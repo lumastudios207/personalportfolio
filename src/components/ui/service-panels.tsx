@@ -34,7 +34,7 @@ export default function ServicePanels() {
             <span className="text-sm font-medium text-[var(--color-accent)]">
               {panel.number}
             </span>
-            <h3 className="whitespace-pre-line text-2xl font-medium text-white md:text-3xl">
+            <h3 className="whitespace-pre-line text-3xl font-medium text-white md:text-3xl">
               {panel.label}
             </h3>
             <p className="max-w-sm text-base leading-relaxed text-white/70 md:text-sm">
