@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="54px" height="40px" viewBox="0 0 54 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 56.2 (81672) - https://sketch.com -->
+    <title>Icons/Validate@2x</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Home" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="D.-IA---Process" transform="translate(-1063.000000, -636.000000)">
+            <g id="Main" transform="translate(0.000000, 120.000000)">
+                <g id="Process" transform="translate(96.000000, 472.000000)">
+                    <g id="Tabs">
+                        <g id="Tab" transform="translate(852.000000, 0.000000)">
+                            <g id="Icons/Validate" transform="translate(110.000000, 32.000000)">
+                                <rect id="Bounds" x="0" y="0" width="64" height="64"></rect>
+                                <path d="M33.5563492,32.1421356 L46.2842712,19.4142136 L59.0121933,32.1421356 C51.9827561,39.1715729 40.5857864,39.1715729 33.5563492,32.1421356 Z" id="Quarter-2" fill="#1FC5C4"></path>
+                                <path d="M44.8700577,18 L32.1421356,30.7279221 L19.4142136,18 C26.4436508,10.9705627 37.8406204,10.9705627 44.8700577,18 Z" id="Quarter-4" fill="#2174C5"></path>
+                                <path d="M19.4142136,46.2842712 L32.1421356,33.5563492 L44.8700577,46.2842712 C37.8406204,53.3137085 26.4436508,53.3137085 19.4142136,46.2842712 Z" id="Quarter-3" fill="#2021C5"></path>
+                                <path d="M30.7279221,32.1421356 L18,44.8700577 L5.27207794,32.1421356 C12.3015152,25.1126984 23.6984848,25.1126984 30.7279221,32.1421356 Z" id="Quarter-1" fill="#AFAFAF"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

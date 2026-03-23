@@ -1,7 +1,20 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import HowIHelp from "../components/HowIHelp.astro";
+import Testimonials from "../components/Testimonials.astro";
+import CaseStudyGrid from "../components/CaseStudyGrid.astro";
+import Footer from "../components/Footer.astro";
 ---
 
 <BaseLayout title="Ivan Annikov — Fractional Product Designer">
-  <!-- Homepage: Hero, How I Help, Client Logos, Testimonials, Case Study Grid, Footer -->
+  <Nav activePage="work" />
+  <main>
+    <Hero />
+    <HowIHelp />
+    <Testimonials />
+    <CaseStudyGrid />
+  </main>
+  <Footer />
 </BaseLayout>

@@ -1,0 +1,62 @@
+---
+interface Props {
+  company: string;
+  location: string;
+  description: string;
+  previewImage: string;
+  workTypes: string[];
+  contributions: string[];
+  projectLength?: string;
+}
+
+const { company, location, description, previewImage, workTypes, contributions, projectLength } = Astro.props;
+
+const workTypeLabels: Record<string, string> = {
+  "product-design": "Product Design",
+  "marketing-design": "Marketing Design",
+};
+
+---
+
+<section>
+  <div class="grid-frame">
+    <div class="grid-row no-notches relative bg-[var(--color-surface)] px-6 pt-6 pb-12 md:px-10 md:pt-11 md:pb-[76px]">
+
+      <!-- Right-side lighter background -->
+      <div class="hidden md:block absolute top-0 bottom-0 right-0 left-[61%] bg-white/50"></div>
+
+      <!-- Full-height vertical divider line -->
+      <div class="hidden md:block absolute top-0 bottom-0 left-[61%] w-px bg-black/[0.18] z-[1]"></div>
+
+      <!-- Company name -->
+      <h1 class="relative z-[2] mb-10 text-4xl font-bold tracking-[-0.03em] text-[var(--color-text)] md:text-6xl">
+        {company}
+      </h1>
+
+      <!-- Two-column: description left, contributions right -->
+      <div class="relative z-[2] flex flex-col gap-10 md:flex-row md:gap-16">
+        <!-- Left: project description -->
+        <div class="md:w-[61%]">
+          <p class="text-lg leading-relaxed text-[var(--color-text)] md:text-xl">
+            {description}
+          </p>
+        </div>
+
+        <!-- Right: contributions -->
+        <div class="md:w-[39%] pl-10 md:pl-14 flex flex-col">
+          <h3 class="mb-5 text-sm font-medium uppercase tracking-[0.08em] text-[var(--color-text-muted)]">
+            My Contribution
+          </h3>
+          <div class="flex flex-wrap items-center gap-3">
+            {contributions.map((item: string, i: number) => (
+              <span class="inline-flex items-center gap-2 rounded-md border border-black/[0.12] bg-white/60 px-3 py-1.5 text-sm font-medium text-[var(--color-text)]">
+                <span class="h-2 w-2 shrink-0 rounded-sm bg-[var(--color-accent)]"></span>
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

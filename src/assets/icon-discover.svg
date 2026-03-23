@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="38px" height="38px" viewBox="0 0 38 38" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 56.2 (81672) - https://sketch.com -->
+    <title>Icons/Discover</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Home" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="D.-IA---Process" transform="translate(-213.000000, -637.000000)">
+            <g id="Main" transform="translate(0.000000, 120.000000)">
+                <g id="Process" transform="translate(96.000000, 472.000000)">
+                    <g id="Tabs">
+                        <g id="Tab">
+                            <g id="Icons/Discover" transform="translate(104.000000, 32.000000)">
+                                <rect id="Bounds" x="9.09494702e-13" y="1.13686838e-13" width="64" height="64"></rect>
+                                <path d="M33,51 L33,33 L51,33 C51,42.9411255 42.9411255,51 33,51 Z" id="Quarter-4" fill="#1FC5C4"></path>
+                                <path d="M31,13 L31,31 L13,31 C13,21.0588745 21.0588745,13 31,13 Z" id="Quarter-3" fill="#2174C5"></path>
+                                <path d="M21,33 L31,33 L31,43 C25.4771525,43 21,38.5228475 21,33 Z" id="Quarter-1" fill="#AFAFAF"></path>
+                                <path d="M43,31 L33,31 L33,21 C38.5228475,21 43,25.4771525 43,31 Z" id="Quarter-1" fill="#AFAFAF"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

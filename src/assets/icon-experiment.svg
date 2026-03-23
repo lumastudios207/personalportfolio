@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="38px" viewBox="0 0 48 38" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 56.2 (81672) - https://sketch.com -->
+    <title>Icons/Experiment</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Home" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="D.-IA---Process" transform="translate(-499.000000, -637.000000)">
+            <g id="Main" transform="translate(0.000000, 120.000000)">
+                <g id="Process" transform="translate(96.000000, 472.000000)">
+                    <g id="Tabs">
+                        <g id="Tab" transform="translate(284.000000, 0.000000)">
+                            <g id="Icons/Experiment" transform="translate(110.000000, 32.000000)">
+                                <rect id="Bounds" x="0" y="0" width="64" height="64"></rect>
+                                <path d="M57,31 L39,31 L39,13 C48.9411255,13 57,21.0588745 57,31 Z" id="Quarter-2" fill="#1FC5C4" transform="translate(48.000000, 22.000000) rotate(-360.000000) translate(-48.000000, -22.000000) "></path>
+                                <path d="M19,13 L37,13 L37,31 C27.0588745,31 19,22.9411255 19,13 Z" id="Quarter-4" fill="#2174C5" transform="translate(28.000000, 22.000000) rotate(-360.000000) translate(-28.000000, -22.000000) "></path>
+                                <path d="M29,51 L29,33 L47,33 C47,42.9411255 38.9411255,51 29,51 L29,51 Z" id="Quarter-3" fill="#2021C5" transform="translate(38.000000, 42.000000) rotate(-360.000000) translate(-38.000000, -42.000000) "></path>
+                                <path d="M9,33 L27,33 L27,51 C17.0588745,51 9,42.9411255 9,33 Z" id="Quarter-1" fill="#AFAFAF"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

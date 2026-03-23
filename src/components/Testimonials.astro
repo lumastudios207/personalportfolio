@@ -1,0 +1,17 @@
+---
+import { Testimonial } from "./ui/testimonials.tsx";
+---
+
+<section>
+  <div class="grid-frame">
+    <!-- Section label row -->
+    <div class="grid-row no-notches bg-[var(--color-surface)] px-6 py-4 md:px-10">
+      <span class="grid-label text-[var(--color-text)]">Testimonials</span>
+    </div>
+
+    <!-- Testimonial carousel -->
+    <div class="grid-row px-6 md:px-10">
+      <Testimonial client:load />
+    </div>
+  </div>
+</section>

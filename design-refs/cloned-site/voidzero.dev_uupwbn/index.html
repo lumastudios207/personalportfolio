@@ -1,0 +1,1154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VoidZero — The JavaScript Tooling Company</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        content: [],
+        theme: {
+          extend: {
+            fontFamily: {
+              apk_protocol: ["APK Protocol", "sans-serif"],
+              kh_teka_mono: ["KH Teka Mono", "monospace"],
+            },
+            keyframes: {
+              fadeUp: {
+                "0%": { opacity: "0", transform: "translateY(24px)" },
+                "100%": { opacity: "1", transform: "translateY(0)" },
+              },
+              fadeIn: {
+                "0%": { opacity: "0" },
+                "100%": { opacity: "1" },
+              },
+              slideDown: {
+                "0%": { opacity: "0", transform: "translateY(-10px)" },
+                "100%": { opacity: "1", transform: "translateY(0)" },
+              },
+              marquee: {
+                "0%": { transform: "translateX(0)" },
+                "100%": { transform: "translateX(-50%)" },
+              },
+              pulseDot: {
+                "0%, 100%": { opacity: "1" },
+                "50%": { opacity: "0.3" },
+              },
+              gradientShift: {
+                "0%": { backgroundPosition: "35% 0" },
+                "50%": { backgroundPosition: "65% 0" },
+                "100%": { backgroundPosition: "35% 0" },
+              },
+            },
+            animation: {
+              "fade-up": "fadeUp 0.6s ease both",
+              "fade-in": "fadeIn 0.5s ease both",
+              "slide-down": "slideDown 0.3s ease both",
+              marquee: "marquee 28s linear infinite",
+              "pulse-dot": "pulseDot 2s ease-in-out infinite",
+              "gradient-shift": "gradientShift 4s ease infinite",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      @font-face {
+        font-family: "APK Protocol";
+        src: url("https://voidzero.dev/assets/APK-Protocol-Medium.C7Mq9oGh.woff2") format("woff2");
+        font-weight: 500;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: "KH Teka Mono";
+        src: url("https://voidzero.dev/assets/KHTekaMono-Regular.CiZ9ZkmZ.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: "KH Teka Mono";
+        src: url("https://voidzero.dev/assets/KHTekaMono-Medium.CxAWoJPq.woff2") format("woff2");
+        font-weight: 500;
+        font-style: normal;
+      }
+
+      /* Scroll reveal */
+      .reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.55s ease, transform 0.55s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .reveal-delay-1 { transition-delay: 0.1s; }
+      .reveal-delay-2 { transition-delay: 0.2s; }
+      .reveal-delay-3 { transition-delay: 0.3s; }
+      .reveal-delay-4 { transition-delay: 0.4s; }
+
+      /* Marquee */
+      .marquee-track {
+        display: flex;
+        width: max-content;
+        animation: marquee 28s linear infinite;
+      }
+      @keyframes marquee {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+
+      /* Hero gradient animation */
+      .hero-title {
+        background: linear-gradient(110deg,
+          rgb(22,23,29) 0%,
+          rgb(22,23,29) 38%,
+          rgb(108,59,255) 47%,
+          rgb(108,59,255) 50%,
+          rgb(108,59,255) 53%,
+          rgb(22,23,29) 62%,
+          rgb(22,23,29) 100%);
+        background-size: 400% 100%;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: gradientShift 5s ease infinite;
+      }
+      @keyframes gradientShift {
+        0%   { background-position: 80% 0; }
+        50%  { background-position: 20% 0; }
+        100% { background-position: 80% 0; }
+      }
+
+      /* Pulse dot */
+      .pulse-dot {
+        animation: pulseDot 2s ease-in-out infinite;
+      }
+      @keyframes pulseDot {
+        0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(22,163,74,0.4); }
+        50%       { opacity: 0.7; box-shadow: 0 0 0 4px rgba(22,163,74,0); }
+      }
+
+      /* Mobile menu */
+      #mobile-menu {
+        transition: transform 0.3s ease, opacity 0.3s ease;
+      }
+      #mobile-menu.hidden-menu {
+        transform: translateY(-8px);
+        opacity: 0;
+        pointer-events: none;
+      }
+      #mobile-menu.visible-menu {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      /* Nav hover underline */
+      .nav-link {
+        position: relative;
+      }
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: currentColor;
+        transition: width 0.2s ease;
+      }
+      .nav-link:hover::after { width: 100%; }
+      .nav-link:hover { color: #18181b !important; }
+
+      /* OSS product cards hover */
+      .oss-card {
+        transition: background-color 0.2s ease;
+      }
+      .oss-card:hover {
+        background-color: #262626;
+      }
+
+      /* Button hover */
+      .btn-outline {
+        transition: background-color 0.2s ease, color 0.2s ease;
+      }
+      .btn-outline:hover {
+        background-color: rgba(255,255,255,0.08);
+      }
+      .btn-outline-dark {
+        transition: background-color 0.2s ease, color 0.2s ease;
+      }
+      .btn-outline-dark:hover {
+        background-color: rgba(0,0,0,0.06);
+      }
+
+      /* Social icon hover */
+      .social-icon {
+        transition: opacity 0.2s ease, transform 0.2s ease;
+      }
+      .social-icon:hover {
+        opacity: 0.7;
+        transform: translateY(-1px);
+      }
+
+      /* Blog card hover */
+      .blog-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .blog-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+      }
+
+      /* OSS sidebar tab active */
+      .oss-tab-active {
+        color: white !important;
+        opacity: 1 !important;
+        filter: grayscale(0) !important;
+      }
+
+      /* Counter */
+      .counter { transition: none; }
+
+      /* Carousel */
+      .carousel-list {
+        display: flex;
+        transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+        will-change: transform;
+      }
+
+      /* Banner dismiss */
+      #top-banner {
+        transition: max-height 0.35s ease, opacity 0.35s ease;
+        max-height: 60px;
+        overflow: hidden;
+        display: block !important;
+      }
+      #top-banner.dismissed {
+        max-height: 0;
+        opacity: 0;
+      }
+
+      /* Footer link hover */
+      .footer-link {
+        transition: color 0.15s ease;
+      }
+      .footer-link:hover {
+        color: white !important;
+      }
+
+      /* Explore btn hover */
+      .explore-btn {
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+      }
+      .explore-btn:hover {
+        background-color: rgba(255,255,255,0.06);
+      }
+
+      /* Subscribe input focus */
+      #newsletter-email:focus {
+        outline: none;
+      }
+      #newsletter-form-wrap:focus-within {
+        border-color: rgba(255,255,255,0.45) !important;
+      }
+
+      /* Count-up */
+      .count-num { display: inline-block; }
+
+      html { scroll-behavior: smooth; }
+    </style>
+  </head>
+  <body class="relative text-black text-base not-italic normal-nums font-normal accent-auto bg-white box-border caret-transparent block tracking-[normal] leading-[22.4px] list-outside list-disc min-h-[1000px] min-w-80 overflow-x-clip pointer-events-auto text-start indent-[0px] normal-case visible w-full border-separate font-apk_protocol">
+    <div class="box-border caret-transparent">
+      <div class="text-zinc-900 bg-white box-border caret-transparent">
+
+        <!-- TOP BANNER -->
+        <div id="top-banner" class="relative text-white bg-zinc-900 box-border caret-transparent w-full z-[60] overflow-hidden border-b border-solid border-white/10">
+          <a href="#" class="relative box-border caret-transparent block w-full">
+            <img src="https://c.animaapp.com/mmutncexOHyleR/assets/footer-background.BOazVP_q.jpg" alt="" class="absolute box-border caret-transparent h-full max-w-full object-cover object-[50%_20%] w-full z-0 inset-0" />
+            <div class="relative box-border caret-transparent flex h-10 w-full z-10 px-4">
+              <div class="items-center box-border caret-transparent gap-x-2 flex max-w-[1440px] gap-y-2 w-full mx-auto px-4">
+                <img src="https://c.animaapp.com/mmutncexOHyleR/assets/image-1.svg" alt="Vite+ icon" class="box-border caret-transparent hidden shrink-0 h-5 max-w-full w-5 md:block" />
+                <span class="text-xs font-medium box-border caret-transparent block tracking-[0.3px] leading-[16.5px] text-ellipsis uppercase text-nowrap overflow-hidden font-kh_teka_mono">Announcing Vite+ Alpha: Open source. Unified. Next-gen.</span>
+                <img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-1.svg" alt="Icon" class="box-border caret-transparent shrink-0 h-5 w-5" />
+              </div>
+            </div>
+          </a>
+          <button id="banner-close" aria-label="Close banner" type="button" class="absolute bg-transparent caret-transparent block text-center z-20 p-2 right-2 top-2/4 -translate-y-1/2 hover:opacity-70 transition-opacity">
+            <img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-2.svg" alt="Icon" class="box-border caret-transparent h-5 w-5" />
+          </button>
+        </div>
+
+        <!-- HEADER / NAV -->
+        <div class="sticky top-0 bg-white box-border caret-transparent z-50 border-b border-zinc-100">
+          <header class="relative items-center box-border caret-transparent flex justify-between max-w-none overflow-x-clip border-zinc-200 mx-auto px-6 py-5 border-x-0 border-solid md:max-w-[1248px] md:py-7 md:border-l md:border-r">
+            <div class="items-center box-border caret-transparent gap-x-10 flex min-h-[auto] min-w-[auto] gap-y-10">
+              <a href="#" class="box-border caret-transparent block min-h-[auto] min-w-[auto] hover:opacity-80 transition-opacity">
+                <img src="https://c.animaapp.com/mmutncexOHyleR/assets/image-2.svg" alt="VoidZero" class="box-border caret-transparent h-4 max-w-full" />
+              </a>
+              <nav class="box-border caret-transparent hidden min-h-0 min-w-0 md:block md:min-h-[auto] md:min-w-[auto]">
+                <ul class="items-center box-border caret-transparent gap-x-0 flex list-none gap-y-0 pl-0">
+                  <li class="text-zinc-500 text-base box-border caret-transparent block leading-6 min-h-0 min-w-0 break-words px-5 md:text-lg md:leading-7 md:min-h-[auto] md:min-w-[auto]">
+                    <a href="#oss" class="text-zinc-900 box-border caret-transparent leading-6 break-words nav-link">Open Source
+                      <img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-3.svg" alt="Icon" class="box-border caret-transparent inline-block h-3 w-3 ml-1" />
+                    </a>
+                  </li>
+                  <li class="text-zinc-500 text-base box-border caret-transparent block leading-6 min-h-0 min-w-0 break-words px-5 md:text-lg md:leading-7 md:min-h-[auto] md:min-w-[auto]">
+                    <a href="#blog" class="text-zinc-900 box-border caret-transparent leading-6 break-words nav-link">Blog</a>
+                  </li>
+                  <li class="text-zinc-500 text-base box-border caret-transparent block leading-6 min-h-0 min-w-0 break-words px-5 md:text-lg md:leading-7 md:min-h-[auto] md:min-w-[auto]">
+                    <a href="#about" class="text-zinc-900 box-border caret-transparent leading-6 break-words nav-link">About</a>
+                  </li>
+                  <li class="text-zinc-500 text-base box-border caret-transparent block leading-6 min-h-0 min-w-0 break-words px-5 md:text-lg md:leading-7 md:min-h-[auto] md:min-w-[auto]">
+                    <a href="https://void.cloud/" class="text-zinc-900 box-border caret-transparent leading-6 break-words nav-link">Void
+                      <img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-4.svg" alt="Icon" class="box-border caret-transparent inline-block h-3 w-3 ml-1" />
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            <div class="items-center box-border caret-transparent gap-x-6 flex min-h-[auto] min-w-[auto] gap-y-6">
+              <div class="items-center box-border caret-transparent gap-x-1 hidden md:flex min-h-[auto] min-w-[auto] gap-y-1">
+                <a href="https://github.com/voidzero-dev" aria-label="GitHub" class="text-zinc-500 items-center box-border caret-transparent flex h-8 justify-center w-8 social-icon rounded-md">
+                  <img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-5.svg" alt="Icon" class="box-border caret-transparent h-[18px] w-[18px]" />
+                </a>
+                <a href="https://x.com/voidzerodev" aria-label="X" class="text-zinc-500 items-center box-border caret-transparent flex h-8 justify-center w-8 social-icon rounded-md">
+                  <img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-6.svg" alt="Icon" class="box-border caret-transparent h-[18px] w-[18px]" />
+                </a>
+                <a href="https://discord.gg/cC6TEVFKSx" aria-label="Discord" class="text-zinc-500 items-center box-border caret-transparent flex h-8 justify-center w-8 social-icon rounded-md">
+                  <img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-7.svg" alt="Icon" class="box-border caret-transparent h-[18px] w-[18px]" />
+                </a>
+                <a href="https://bsky.app/profile/voidzero.dev" aria-label="Bluesky" class="text-zinc-500 items-center box-border caret-transparent flex h-8 justify-center w-8 social-icon rounded-md">
+                  <img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-8.svg" alt="Icon" class="box-border caret-transparent h-[18px] w-[18px]" />
+                </a>
+              </div>
+              <!-- Hamburger -->
+              <button id="hamburger-btn" aria-label="Toggle navigation menu" type="button" class="bg-transparent caret-transparent block min-h-[auto] min-w-[auto] text-center -mr-2 p-2 md:hidden transition-opacity hover:opacity-70">
+                <img id="hamburger-icon" src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-9.svg" alt="Menu" class="box-border caret-transparent h-6 w-6" />
+              </button>
+            </div>
+          </header>
+
+          <!-- Mobile Menu -->
+          <div id="mobile-menu" class="hidden-menu absolute top-full left-0 right-0 bg-white border-b border-zinc-200 md:hidden z-50">
+            <nav class="max-w-[1248px] mx-auto px-6 py-4">
+              <ul class="flex flex-col gap-y-0 list-none pl-0">
+                <li>
+                  <a href="#oss" class="mobile-nav-link block text-zinc-900 text-base leading-6 py-3 border-b border-zinc-100 hover:text-zinc-500 transition-colors">Open Source</a>
+                </li>
+                <li>
+                  <a href="#blog" class="mobile-nav-link block text-zinc-900 text-base leading-6 py-3 border-b border-zinc-100 hover:text-zinc-500 transition-colors">Blog</a>
+                </li>
+                <li>
+                  <a href="#about" class="mobile-nav-link block text-zinc-900 text-base leading-6 py-3 border-b border-zinc-100 hover:text-zinc-500 transition-colors">About</a>
+                </li>
+                <li>
+                  <a href="https://void.cloud/" class="mobile-nav-link block text-zinc-900 text-base leading-6 py-3 hover:text-zinc-500 transition-colors">Void ↗</a>
+                </li>
+              </ul>
+              <div class="flex gap-x-4 pt-4">
+                <a href="https://github.com/voidzero-dev" aria-label="GitHub" class="social-icon p-1"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-5.svg" alt="GitHub" class="h-5 w-5" /></a>
+                <a href="https://x.com/voidzerodev" aria-label="X" class="social-icon p-1"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-6.svg" alt="X" class="h-5 w-5" /></a>
+                <a href="https://discord.gg/cC6TEVFKSx" aria-label="Discord" class="social-icon p-1"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-7.svg" alt="Discord" class="h-5 w-5" /></a>
+                <a href="https://bsky.app/profile/voidzero.dev" aria-label="Bluesky" class="social-icon p-1"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-8.svg" alt="Bluesky" class="h-5 w-5" /></a>
+              </div>
+            </nav>
+          </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="relative box-border caret-transparent">
+          <div class="box-border caret-transparent">
+
+            <!-- HERO -->
+            <div id="hero" class="relative items-center box-border caret-transparent gap-x-6 flex flex-col justify-start max-w-none overflow-x-clip gap-y-6 border-zinc-200 mx-auto pt-6 pb-10 border-x-0 border-solid md:max-w-[1248px] md:pt-20 md:border-l md:border-r">
+              <div class="items-center box-border caret-transparent gap-x-10 flex flex-col justify-start min-h-[auto] min-w-[auto] gap-y-10 w-full px-5 md:w-[672px] md:px-0">
+                <div class="items-center box-border caret-transparent gap-x-4 flex flex-col justify-start min-h-[auto] min-w-[auto] gap-y-4">
+
+                  <!-- Status badge -->
+                  <div class="animate-fade-up text-sm font-medium items-center shadow-sm box-border caret-transparent gap-x-1.5 flex tracking-[-0.7px] leading-5 min-h-[auto] min-w-[auto] outline outline-1 outline-black/5 gap-y-1.5 mb-3 px-3 py-1 rounded font-kh_teka_mono">
+                    <div class="items-center bg-green-600/10 box-border caret-transparent gap-x-2 flex justify-start min-h-[auto] min-w-[auto] gap-y-2 p-0.5 rounded">
+                      <div class="bg-green-600 pulse-dot box-border caret-transparent h-1.5 min-h-[auto] min-w-[auto] w-1.5 rounded-[1.1px]"></div>
+                    </div>
+                    <span class="text-zinc-500 box-border caret-transparent block min-h-[auto] min-w-[auto]">prod server</span>
+                    <span class="text-zinc-500 box-border caret-transparent block min-h-[auto] min-w-[auto]">/</span>
+                    <span class="text-neutral-700 box-border caret-transparent block min-h-[auto] min-w-[auto]">running</span>
+                  </div>
+
+                  <!-- Hero headline -->
+                  <h1 class="animate-fade-up text-4xl font-medium hero-title box-border caret-transparent tracking-[-1.8px] leading-10 min-h-[auto] min-w-[auto] break-words text-center md:text-6xl md:tracking-[-3px] md:leading-[67.2px]" style="animation-delay:0.1s">
+                    <span class="text-4xl box-border caret-transparent inline-block tracking-[-1.8px] leading-10 break-words md:text-6xl md:tracking-[-3px] md:leading-[67.2px]">The JavaScript</span>
+                    <span class="text-4xl box-border caret-transparent inline-block tracking-[-1.8px] leading-10 break-words md:text-6xl md:tracking-[-3px] md:leading-[67.2px]">Tooling Company</span>
+                  </h1>
+
+                  <p class="animate-fade-up text-neutral-700 text-base self-stretch box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words text-center md:text-lg md:leading-7" style="animation-delay:0.2s">
+                    Making JavaScript developers more productive than ever before.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Hero image -->
+              <div class="animate-fade-in box-border caret-transparent min-h-[auto] min-w-[auto]" style="animation-delay:0.35s">
+                <img src="https://c.animaapp.com/mmutncexOHyleR/assets/image-4.png" class="aspect-[auto_766_/_347] box-border caret-transparent max-w-[960px] pointer-events-none w-full mx-auto pt-6 md:pt-0 max-w-full" />
+              </div>
+            </div>
+
+            <!-- TRUSTED BY MARQUEE -->
+            <section id="trusted" class="relative items-center box-border caret-transparent gap-x-[normal] flex flex-col justify-center max-w-none overflow-x-clip gap-y-[normal] border-zinc-200 mx-auto pt-10 pb-0 border-x-0 border-t border-solid md:gap-x-2 md:max-w-[1248px] md:gap-y-2 md:pt-14 md:pb-5 md:border-l md:border-r before:accent-auto before:border-l-zinc-200 before:box-border before:caret-transparent before:text-zinc-900 before:block before:text-base before:not-italic before:normal-nums before:font-normal before:h-0 before:tracking-[normal] before:leading-[22.4px] before:list-outside before:list-disc before:pointer-events-auto before:absolute before:text-start before:no-underline before:indent-[0px] before:normal-case before:top-[-5px] before:visible before:w-0 before:border-r-transparent before:border-y-transparent before:border-separate before:border-[5px] before:border-solid before:left-0 before:font-apk_protocol after:accent-auto after:border-r-zinc-200 after:box-border after:caret-transparent after:text-zinc-900 after:block after:text-base after:not-italic after:normal-nums after:font-normal after:h-0 after:tracking-[normal] after:leading-[22.4px] after:list-outside after:list-disc after:pointer-events-auto after:absolute after:text-start after:no-underline after:indent-[0px] after:normal-case after:top-[-5px] after:visible after:w-0 after:border-l-transparent after:border-y-transparent after:border-separate after:border-[5px] after:border-solid after:right-0 after:font-apk_protocol">
+              <p class="reveal text-neutral-700 text-base self-stretch box-border caret-transparent leading-6 max-w-[281.25px] min-h-[auto] min-w-[auto] break-words text-center mx-auto md:text-lg md:leading-7 md:max-w-full">
+                Trusted by the world's best software teams
+              </p>
+              <div class="reveal reveal-delay-1 relative items-center box-border caret-transparent flex justify-center max-w-full min-h-[auto] min-w-[auto] w-full">
+                <!-- Left fade -->
+                <div class="absolute text-neutral-700 items-center box-border caret-transparent flex justify-center left-[calc(50%_-_76px)] pointer-events-none translate-y-[-50%] z-10 top-2/4 md:left-[calc(50%_-_83px)]">
+                  <img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-11.svg" alt="" class="box-border caret-transparent h-[27px] w-[7.2px] md:h-[40.5px] md:w-[10.8px]" />
+                </div>
+                <div class="relative items-center box-border caret-transparent flex max-w-[450px] min-h-[auto] min-w-[auto] w-full overflow-hidden md:max-w-[870px]">
+                  <div class="marquee-track">
+                    <!-- 2x for seamless loop -->
+                    <div class="items-center box-border caret-transparent flex shrink-0 h-[120px] justify-center min-h-[auto] min-w-[auto] w-[120px] p-4 md:h-[126px] md:w-[126px]"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/shopify.CQApybR0.svg" alt="Shopify" class="box-border caret-transparent grayscale h-full max-w-full min-h-[auto] min-w-[auto] object-contain opacity-20 pointer-events-none w-full hover:opacity-60 transition-opacity" /></div>
+                    <div class="items-center box-border caret-transparent flex shrink-0 h-[120px] justify-center min-h-[auto] min-w-[auto] w-[120px] p-4 md:h-[126px] md:w-[126px]"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/openai.C-wIkBsS.svg" alt="OpenAI" class="box-border caret-transparent grayscale h-full max-w-full min-h-[auto] min-w-[auto] object-contain opacity-20 pointer-events-none w-full hover:opacity-60 transition-opacity" /></div>
+                    <div class="items-center box-border caret-transparent flex shrink-0 h-[120px] justify-center min-h-[auto] min-w-[auto] w-[120px] p-4 md:h-[126px] md:w-[126px]"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/framer.CYQ_YXyZ.svg" alt="Framer" class="box-border caret-transparent grayscale h-full max-w-full min-h-[auto] min-w-[auto] object-contain opacity-20 pointer-events-none w-full hover:opacity-60 transition-opacity" /></div>
+                    <div class="items-center box-border caret-transparent flex shrink-0 h-[120px] justify-center min-h-[auto] min-w-[auto] w-[120px] p-4 md:h-[126px] md:w-[126px]"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/linear.BWHZTF1C.svg" alt="Linear" class="box-border caret-transparent grayscale h-full max-w-full min-h-[auto] min-w-[auto] object-contain opacity-20 pointer-events-none w-full hover:opacity-60 transition-opacity" /></div>
+                    <div class="items-center box-border caret-transparent flex shrink-0 h-[120px] justify-center min-h-[auto] min-w-[auto] w-[120px] p-4 md:h-[126px] md:w-[126px]"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/hugging-face.D3UbJgv4.svg" alt="Hugging Face" class="box-border caret-transparent grayscale h-full max-w-full min-h-[auto] min-w-[auto] object-contain opacity-20 pointer-events-none w-full hover:opacity-60 transition-opacity" /></div>
+                    <div class="items-center box-border caret-transparent flex shrink-0 h-[120px] justify-center min-h-[auto] min-w-[auto] w-[120px] p-4 md:h-[126px] md:w-[126px]"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/image-5.svg" alt="Cloudflare" class="box-border caret-transparent grayscale h-full max-w-full min-h-[auto] min-w-[auto] object-contain opacity-20 pointer-events-none w-full hover:opacity-60 transition-opacity" /></div>
+                    <div class="items-center box-border caret-transparent flex shrink-0 h-[120px] justify-center min-h-[auto] min-w-[auto] w-[120px] p-4 md:h-[126px] md:w-[126px]"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/mercedes.BcDJwg4x.svg" alt="Mercedes" class="box-border caret-transparent grayscale h-full max-w-full min-h-[auto] min-w-[auto] object-contain opacity-20 pointer-events-none w-full hover:opacity-60 transition-opacity" /></div>
+                    <!-- Duplicate for seamless loop -->
+                    <div class="items-center box-border caret-transparent flex shrink-0 h-[120px] justify-center min-h-[auto] min-w-[auto] w-[120px] p-4 md:h-[126px] md:w-[126px]"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/shopify.CQApybR0.svg" alt="Shopify" class="box-border caret-transparent grayscale h-full max-w-full min-h-[auto] min-w-[auto] object-contain opacity-20 pointer-events-none w-full" /></div>
+                    <div class="items-center box-border caret-transparent flex shrink-0 h-[120px] justify-center min-h-[auto] min-w-[auto] w-[120px] p-4 md:h-[126px] md:w-[126px]"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/openai.C-wIkBsS.svg" alt="OpenAI" class="box-border caret-transparent grayscale h-full max-w-full min-h-[auto] min-w-[auto] object-contain opacity-20 pointer-events-none w-full" /></div>
+                    <div class="items-center box-border caret-transparent flex shrink-0 h-[120px] justify-center min-h-[auto] min-w-[auto] w-[120px] p-4 md:h-[126px] md:w-[126px]"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/framer.CYQ_YXyZ.svg" alt="Framer" class="box-border caret-transparent grayscale h-full max-w-full min-h-[auto] min-w-[auto] object-contain opacity-20 pointer-events-none w-full" /></div>
+                    <div class="items-center box-border caret-transparent flex shrink-0 h-[120px] justify-center min-h-[auto] min-w-[auto] w-[120px] p-4 md:h-[126px] md:w-[126px]"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/linear.BWHZTF1C.svg" alt="Linear" class="box-border caret-transparent grayscale h-full max-w-full min-h-[auto] min-w-[auto] object-contain opacity-20 pointer-events-none w-full" /></div>
+                    <div class="items-center box-border caret-transparent flex shrink-0 h-[120px] justify-center min-h-[auto] min-w-[auto] w-[120px] p-4 md:h-[126px] md:w-[126px]"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/hugging-face.D3UbJgv4.svg" alt="Hugging Face" class="box-border caret-transparent grayscale h-full max-w-full min-h-[auto] min-w-[auto] object-contain opacity-20 pointer-events-none w-full" /></div>
+                    <div class="items-center box-border caret-transparent flex shrink-0 h-[120px] justify-center min-h-[auto] min-w-[auto] w-[120px] p-4 md:h-[126px] md:w-[126px]"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/image-5.svg" alt="Cloudflare" class="box-border caret-transparent grayscale h-full max-w-full min-h-[auto] min-w-[auto] object-contain opacity-20 pointer-events-none w-full" /></div>
+                    <div class="items-center box-border caret-transparent flex shrink-0 h-[120px] justify-center min-h-[auto] min-w-[auto] w-[120px] p-4 md:h-[126px] md:w-[126px]"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/mercedes.BcDJwg4x.svg" alt="Mercedes" class="box-border caret-transparent grayscale h-full max-w-full min-h-[auto] min-w-[auto] object-contain opacity-20 pointer-events-none w-full" /></div>
+                  </div>
+                </div>
+                <div class="absolute text-neutral-700 items-center box-border caret-transparent flex justify-center pointer-events-none right-[calc(50%_-_76px)] translate-y-[-50%] z-10 top-2/4 md:right-[calc(50%_-_83px)]">
+                  <img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-12.svg" alt="" class="box-border caret-transparent h-[27px] w-[7.2px] md:h-[40.5px] md:w-[10.8px]" />
+                </div>
+              </div>
+            </section>
+
+            <!-- OSS SECTION -->
+            <section id="oss" class="text-white bg-zinc-900 box-border caret-transparent">
+              <section class="relative box-border caret-transparent max-w-none overflow-x-clip border-neutral-700 mx-auto p-5 border-x-0 border-t border-solid md:max-w-[1248px] md:pl-10 md:border-l md:border-r">
+                <span class="text-xs font-medium box-border caret-transparent tracking-[0.3px] leading-4 uppercase font-kh_teka_mono">OSS</span>
+              </section>
+              <section class="relative box-border caret-transparent gap-x-5 flex flex-col h-48 justify-center max-w-none overflow-x-clip gap-y-5 border-neutral-700 mx-auto px-10 border-x-0 border-t border-solid md:h-[360px] md:max-w-[1248px] md:border-l md:border-r before:accent-auto before:border-l-neutral-700 before:box-border before:caret-transparent before:text-white before:block before:text-base before:not-italic before:normal-nums before:font-normal before:h-0 before:tracking-[normal] before:leading-[22.4px] before:list-outside before:list-disc before:pointer-events-auto before:absolute before:text-start before:no-underline before:indent-[0px] before:normal-case before:top-[-5px] before:visible before:w-0 before:border-r-transparent before:border-y-transparent before:border-separate before:border-[5px] before:border-solid before:left-0 before:font-apk_protocol after:accent-auto after:border-r-neutral-700 after:box-border after:caret-transparent after:text-white after:block after:text-base after:not-italic after:normal-nums after:font-normal after:h-0 after:tracking-[normal] after:leading-[22.4px] after:list-outside after:list-disc after:pointer-events-auto after:absolute after:text-start after:no-underline after:indent-[0px] after:normal-case after:top-[-5px] after:visible after:w-0 after:border-l-transparent after:border-y-transparent after:border-separate after:border-[5px] after:border-solid after:right-0 after:font-apk_protocol">
+                <h2 class="reveal text-3xl font-medium box-border caret-transparent tracking-[-0.75px] leading-9 min-h-[auto] min-w-[auto] break-words md:text-5xl md:tracking-[-1.2px] md:leading-[48px]">Open Source</h2>
+                <p class="reveal reveal-delay-1 text-white/70 text-base box-border caret-transparent leading-6 max-w-md min-h-[auto] min-w-[auto] break-words md:text-lg md:leading-7">
+                  We are the creators, maintainers, and contributors of some of the most critical infrastructure projects in the JavaScript ecosystem.
+                </p>
+              </section>
+
+              <!-- OSS Cards with sticky sidebar -->
+              <section class="relative box-border caret-transparent flex max-w-none overflow-x-clip border-neutral-700 mx-auto border-x-0 border-t border-solid md:max-w-[1248px] md:border-l md:border-r before:accent-auto before:border-l-neutral-700 before:box-border before:caret-transparent before:text-white before:block before:text-base before:not-italic before:normal-nums before:font-normal before:h-0 before:tracking-[normal] before:leading-[22.4px] before:list-outside before:list-disc before:pointer-events-auto before:absolute before:text-start before:no-underline before:indent-[0px] before:normal-case before:top-[-5px] before:visible before:w-0 before:border-r-transparent before:border-y-transparent before:border-separate before:border-[5px] before:border-solid before:left-0 before:font-apk_protocol after:accent-auto after:border-r-neutral-700 after:box-border after:caret-transparent after:text-white after:block after:text-base after:not-italic after:normal-nums after:font-normal after:h-0 after:tracking-[normal] after:leading-[22.4px] after:list-outside after:list-disc after:pointer-events-auto after:absolute after:text-start after:no-underline after:indent-[0px] after:normal-case after:top-[-5px] after:visible after:w-0 after:border-l-transparent after:border-y-transparent after:border-separate after:border-[5px] after:border-solid after:right-0 after:font-apk_protocol">
+                <!-- Sidebar -->
+                <div class="sticky self-start box-border caret-transparent hidden flex-col min-h-0 min-w-0 w-72 p-10 top-16 md:flex md:min-h-[auto] md:min-w-[auto]">
+                  <ul class="box-border caret-transparent gap-x-4 flex flex-col list-none min-h-0 min-w-0 gap-y-4 pl-0 md:min-h-[auto] md:min-w-[auto]" id="oss-sidebar">
+                    <li class="text-zinc-500 text-base box-border caret-transparent leading-6 min-h-0 min-w-0 break-words md:text-lg md:leading-7 md:min-h-[auto] md:min-w-[auto]">
+                      <button type="button" data-product="viteplus" class="oss-tab bg-transparent caret-transparent gap-x-4 flex leading-6 break-words gap-y-4 text-center p-0 transition-opacity hover:opacity-80 oss-tab-active">
+                        <img src="https://c.animaapp.com/mmutncexOHyleR/assets/viteplus-light.CYpc0gnV.svg" alt="Vite+" class="box-border caret-transparent h-6 max-w-full min-h-0 min-w-0 break-words w-6 md:min-h-[auto] md:min-w-[auto]" />
+                        Vite+
+                      </button>
+                    </li>
+                    <li class="text-zinc-500 text-base box-border caret-transparent grayscale-[1] leading-6 min-h-0 min-w-0 opacity-40 break-words md:text-lg md:leading-7 md:min-h-[auto] md:min-w-[auto]">
+                      <button type="button" data-product="vite" class="oss-tab bg-transparent caret-transparent gap-x-4 flex leading-6 break-words gap-y-4 text-center p-0 transition-opacity hover:opacity-80">
+                        <img src="https://c.animaapp.com/mmutncexOHyleR/assets/vite-light.MG8M2jAW.svg" alt="Vite" class="box-border caret-transparent h-6 max-w-full min-h-0 min-w-0 break-words w-6 md:min-h-[auto] md:min-w-[auto]" />
+                        Vite
+                      </button>
+                    </li>
+                    <li class="text-zinc-500 text-base box-border caret-transparent grayscale-[1] leading-6 min-h-0 min-w-0 opacity-40 break-words md:text-lg md:leading-7 md:min-h-[auto] md:min-w-[auto]">
+                      <button type="button" data-product="vitest" class="oss-tab bg-transparent caret-transparent gap-x-4 flex leading-6 break-words gap-y-4 text-center p-0 transition-opacity hover:opacity-80">
+                        <img src="https://c.animaapp.com/mmutncexOHyleR/assets/vitest-light.BeSPX0d3.svg" alt="Vitest" class="box-border caret-transparent h-6 max-w-full min-h-0 min-w-0 break-words w-6 md:min-h-[auto] md:min-w-[auto]" />
+                        Vitest
+                      </button>
+                    </li>
+                    <li class="text-zinc-500 text-base box-border caret-transparent grayscale-[1] leading-6 min-h-0 min-w-0 opacity-40 break-words md:text-lg md:leading-7 md:min-h-[auto] md:min-w-[auto]">
+                      <button type="button" data-product="rolldown" class="oss-tab bg-transparent caret-transparent gap-x-4 flex leading-6 break-words gap-y-4 text-center p-0 transition-opacity hover:opacity-80">
+                        <img src="https://c.animaapp.com/mmutncexOHyleR/assets/rolldown-light.Su7w3UUn.svg" alt="Rolldown" class="box-border caret-transparent h-6 max-w-full min-h-0 min-w-0 break-words w-6 md:min-h-[auto] md:min-w-[auto]" />
+                        Rolldown
+                      </button>
+                    </li>
+                    <li class="text-zinc-500 text-base box-border caret-transparent grayscale-[1] leading-6 min-h-0 min-w-0 opacity-40 break-words md:text-lg md:leading-7 md:min-h-[auto] md:min-w-[auto]">
+                      <button type="button" data-product="oxc" class="oss-tab bg-transparent caret-transparent gap-x-4 flex leading-6 break-words gap-y-4 text-center p-0 transition-opacity hover:opacity-80">
+                        <img src="https://c.animaapp.com/mmutncexOHyleR/assets/oxc-light.BlLWBvd-.svg" alt="Oxc" class="box-border caret-transparent h-6 max-w-full min-h-0 min-w-0 break-words w-6 md:min-h-[auto] md:min-w-[auto]" />
+                        Oxc
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- Cards -->
+                <div class="box-border caret-transparent min-h-[auto] min-w-[auto] w-full border-neutral-700 border-l-0 border-solid md:border-l">
+                  <!-- Vite+ -->
+                  <div data-product-card="viteplus" class="oss-product-card box-border caret-transparent grid grid-cols-none w-full md:grid-cols-[repeat(2,minmax(0px,1fr))]">
+                    <div class="reveal box-border caret-transparent gap-x-10 flex flex-col justify-between min-h-[auto] min-w-[auto] gap-y-10 p-10 md:gap-x-20 md:gap-y-20">
+                      <div class="box-border caret-transparent gap-x-5 flex flex-col max-w-xs min-h-[auto] min-w-[auto] gap-y-5">
+                        <span class="text-zinc-500 text-xs box-border caret-transparent block tracking-[0.3px] leading-4 min-h-[auto] min-w-[auto] uppercase font-kh_teka_mono">Vite+</span>
+                        <h4 class="text-xl font-medium box-border caret-transparent leading-7 min-h-[auto] min-w-[auto] break-words md:text-3xl md:leading-9">The unified toolchain for the web</h4>
+                        <p class="text-white/70 box-border caret-transparent leading-6 max-w-[400px] min-h-[auto] min-w-[auto] break-words">Vite+ is the entry point to web application development that manages your runtime, package manager, and frontend toolchain.</p>
+                        <a href="https://viteplus.dev/" class="explore-btn font-medium items-center box-border caret-transparent gap-x-2 block justify-center leading-6 min-h-[auto] min-w-[auto] outline-neutral-700 outline outline-1 gap-y-2 w-fit overflow-hidden mt-5 px-3 py-1.5 rounded">Explore Vite+</a>
+                      </div>
+                      <div class="items-center bg-neutral-900 box-border caret-transparent gap-x-4 flex min-h-[auto] min-w-[auto] gap-y-4 w-fit px-3 py-1 rounded">
+                        <a href="https://github.com/voidzero-dev/vite-plus" class="box-border caret-transparent block min-h-[auto] min-w-[auto] social-icon">
+                          <img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-13.svg" alt="Icon" class="box-border caret-transparent h-5 w-5" />
+                        </a>
+                        <div class="items-baseline box-border caret-transparent gap-x-1 flex min-h-[auto] min-w-[auto] gap-y-1">
+                          <span class="text-violet-600 box-border caret-transparent block tracking-[-0.4px] leading-6 min-h-[auto] min-w-[auto]">new</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="box-border caret-transparent flex flex-col min-h-64 min-w-[auto] md:min-h-[480px]">
+                      <div class="relative box-border caret-transparent flex flex-col h-full justify-center min-h-[auto] min-w-[auto] overflow-clip pl-10">
+                        <div class="absolute bg-[url('https://voidzero.dev/assets/viteplus.QG_kyPcM.jpg')] bg-cover box-border caret-transparent bg-center inset-0"></div>
+                        <div class="relative bg-neutral-900 box-border caret-transparent min-h-[auto] min-w-[auto] outline-white/20 outline-offset-2 outline outline-1 z-10 p-2 rounded-bl rounded-tl">
+                          <img src="https://c.animaapp.com/mmutncexOHyleR/assets/viteplus.DWFNSSex.png" alt="terminal" class="box-border caret-transparent max-w-full" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Vite -->
+                  <div data-product-card="vite" class="oss-product-card box-border caret-transparent grid grid-cols-none w-full border-neutral-700 border-t border-solid md:grid-cols-[repeat(2,minmax(0px,1fr))]">
+                    <div class="reveal box-border caret-transparent gap-x-10 flex flex-col justify-between min-h-[auto] min-w-[auto] gap-y-10 p-10 md:gap-x-20 md:gap-y-20">
+                      <div class="box-border caret-transparent gap-x-5 flex flex-col max-w-xs min-h-[auto] min-w-[auto] gap-y-5">
+                        <span class="text-zinc-500 text-xs box-border caret-transparent block tracking-[0.3px] leading-4 min-h-[auto] min-w-[auto] uppercase font-kh_teka_mono">Vite</span>
+                        <h4 class="text-xl font-medium box-border caret-transparent leading-7 min-h-[auto] min-w-[auto] break-words md:text-3xl md:leading-9">The build tool for the web</h4>
+                        <p class="text-white/70 box-border caret-transparent leading-6 max-w-[400px] min-h-[auto] min-w-[auto] break-words">Vite is the default choice for single-page web applications and the foundation for fullstack frameworks like TanStack Start, Nuxt, SvelteKit and more.</p>
+                        <a href="https://vite.dev/" class="explore-btn font-medium items-center box-border caret-transparent gap-x-2 block justify-center leading-6 min-h-[auto] min-w-[auto] outline-neutral-700 outline outline-1 gap-y-2 w-fit overflow-hidden mt-5 px-3 py-1.5 rounded">Explore Vite</a>
+                      </div>
+                      <div class="items-center bg-neutral-900 box-border caret-transparent gap-x-4 flex min-h-[auto] min-w-[auto] gap-y-4 w-fit px-3 py-1 rounded">
+                        <a href="https://github.com/vitejs/vite" class="box-border caret-transparent block min-h-[auto] min-w-[auto] social-icon"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-14.svg" alt="Icon" class="box-border caret-transparent h-5 w-5" /></a>
+                        <div class="items-baseline box-border caret-transparent gap-x-1 flex min-h-[auto] min-w-[auto] gap-y-1">
+                          <span class="font-medium box-border caret-transparent block tracking-[-0.4px] min-h-[auto] min-w-[auto]">79.0k</span>
+                          <span class="text-zinc-500 box-border caret-transparent block tracking-[-0.4px] leading-6 min-h-[auto] min-w-[auto]">stars</span>
+                        </div>
+                        <div class="items-baseline box-border caret-transparent gap-x-1 flex min-h-[auto] min-w-[auto] gap-y-1">
+                          <span class="font-medium box-border caret-transparent block tracking-[-0.4px] min-h-[auto] min-w-[auto]">1,245</span>
+                          <span class="text-zinc-500 box-border caret-transparent block tracking-[-0.4px] leading-6 min-h-[auto] min-w-[auto]">contributors</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="box-border caret-transparent flex flex-col min-h-64 min-w-[auto] md:min-h-[480px]">
+                      <div class="relative box-border caret-transparent flex flex-col h-full justify-center min-h-[auto] min-w-[auto] overflow-clip pl-10">
+                        <div class="absolute bg-violet-400 bg-[url('https://voidzero.dev/assets/vite.DJccTzmn.jpg')] bg-cover box-border caret-transparent bg-center inset-0"></div>
+                        <div class="relative bg-neutral-900 box-border caret-transparent min-h-[auto] min-w-[auto] outline-white/20 outline-offset-2 outline outline-1 z-10 p-2 rounded-bl rounded-tl">
+                          <img src="https://c.animaapp.com/mmutncexOHyleR/assets/vite.5rp3iChU.svg" alt="terminal" class="box-border caret-transparent max-w-full" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Vitest -->
+                  <div data-product-card="vitest" class="oss-product-card box-border caret-transparent grid grid-cols-none w-full border-neutral-700 border-t border-solid md:grid-cols-[repeat(2,minmax(0px,1fr))]">
+                    <div class="reveal box-border caret-transparent gap-x-10 flex flex-col justify-between min-h-[auto] min-w-[auto] gap-y-10 p-10 md:gap-x-20 md:gap-y-20">
+                      <div class="box-border caret-transparent gap-x-5 flex flex-col max-w-xs min-h-[auto] min-w-[auto] gap-y-5">
+                        <span class="text-zinc-500 text-xs box-border caret-transparent block tracking-[0.3px] leading-4 min-h-[auto] min-w-[auto] uppercase font-kh_teka_mono">Vitest</span>
+                        <h4 class="text-xl font-medium box-border caret-transparent leading-7 min-h-[auto] min-w-[auto] break-words md:text-3xl md:leading-9">The next-generation test runner</h4>
+                        <p class="text-white/70 box-border caret-transparent leading-6 max-w-[400px] min-h-[auto] min-w-[auto] break-words">Vitest is a feature-rich test runner that understands your Vite config, is Jest-compatible, and works out-of-the-box with TypeScript &amp; ESM.</p>
+                        <a href="https://vitest.dev/" class="explore-btn font-medium items-center box-border caret-transparent gap-x-2 block justify-center leading-6 min-h-[auto] min-w-[auto] outline-neutral-700 outline outline-1 gap-y-2 w-fit overflow-hidden mt-5 px-3 py-1.5 rounded">Explore Vitest</a>
+                      </div>
+                      <div class="items-center bg-neutral-900 box-border caret-transparent gap-x-4 flex min-h-[auto] min-w-[auto] gap-y-4 w-fit px-3 py-1 rounded">
+                        <a href="https://github.com/vitest-dev/vitest" class="box-border caret-transparent block min-h-[auto] min-w-[auto] social-icon"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-14.svg" alt="Icon" class="box-border caret-transparent h-5 w-5" /></a>
+                        <div class="items-baseline box-border caret-transparent gap-x-1 flex min-h-[auto] min-w-[auto] gap-y-1">
+                          <span class="font-medium box-border caret-transparent block tracking-[-0.4px] min-h-[auto] min-w-[auto]">16.1k</span>
+                          <span class="text-zinc-500 box-border caret-transparent block tracking-[-0.4px] leading-6 min-h-[auto] min-w-[auto]">stars</span>
+                        </div>
+                        <div class="items-baseline box-border caret-transparent gap-x-1 flex min-h-[auto] min-w-[auto] gap-y-1">
+                          <span class="font-medium box-border caret-transparent block tracking-[-0.4px] min-h-[auto] min-w-[auto]">722</span>
+                          <span class="text-zinc-500 box-border caret-transparent block tracking-[-0.4px] leading-6 min-h-[auto] min-w-[auto]">contributors</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="box-border caret-transparent flex flex-col min-h-72 min-w-[auto] md:min-h-[480px]">
+                      <div class="relative box-border caret-transparent flex flex-col h-full justify-end min-h-[auto] min-w-[auto] overflow-clip pl-10 pt-10 md:pt-0">
+                        <div class="absolute bg-[url('https://voidzero.dev/assets/vitest.Ct_DRQC5.jpg')] bg-cover box-border caret-transparent bg-center inset-0"></div>
+                        <div class="relative bg-neutral-900 box-border caret-transparent min-h-[auto] min-w-[auto] outline-white/20 outline-offset-2 outline outline-1 z-10 p-2 rounded-tl">
+                          <img src="https://c.animaapp.com/mmutncexOHyleR/assets/vitest.C33Vbobj.png" alt="terminal" class="box-border caret-transparent max-w-full" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Rolldown -->
+                  <div data-product-card="rolldown" class="oss-product-card box-border caret-transparent grid grid-cols-none w-full border-neutral-700 border-t border-solid md:grid-cols-[repeat(2,minmax(0px,1fr))]">
+                    <div class="reveal box-border caret-transparent gap-x-10 flex flex-col justify-between min-h-[auto] min-w-[auto] gap-y-10 p-10 md:gap-x-20 md:gap-y-20">
+                      <div class="box-border caret-transparent gap-x-5 flex flex-col max-w-xs min-h-[auto] min-w-[auto] gap-y-5">
+                        <span class="text-zinc-500 text-xs box-border caret-transparent block tracking-[0.3px] leading-4 min-h-[auto] min-w-[auto] uppercase font-kh_teka_mono">Rolldown</span>
+                        <h4 class="text-xl font-medium box-border caret-transparent leading-7 min-h-[auto] min-w-[auto] break-words md:text-3xl md:leading-9">The blazing fast JavaScript bundler</h4>
+                        <p class="text-white/70 box-border caret-transparent leading-6 max-w-[400px] min-h-[auto] min-w-[auto] break-words">Rolldown is a Rust-based bundler with Rollup-compatible API, and esbuild-equivalent performance &amp; feature set. It also powers Vite version 8 and above.</p>
+                        <a href="https://rolldown.rs/" class="explore-btn font-medium items-center box-border caret-transparent gap-x-2 block justify-center leading-6 min-h-[auto] min-w-[auto] outline-neutral-700 outline outline-1 gap-y-2 w-fit overflow-hidden mt-5 px-3 py-1.5 rounded">Explore Rolldown</a>
+                      </div>
+                      <div class="items-center bg-neutral-900 box-border caret-transparent gap-x-4 flex min-h-[auto] min-w-[auto] gap-y-4 w-fit px-3 py-1 rounded">
+                        <a href="https://github.com/rolldown/rolldown" class="box-border caret-transparent block min-h-[auto] min-w-[auto] social-icon"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-14.svg" alt="Icon" class="box-border caret-transparent h-5 w-5" /></a>
+                        <div class="items-baseline box-border caret-transparent gap-x-1 flex min-h-[auto] min-w-[auto] gap-y-1">
+                          <span class="font-medium box-border caret-transparent block tracking-[-0.4px] min-h-[auto] min-w-[auto]">13.1k</span>
+                          <span class="text-zinc-500 box-border caret-transparent block tracking-[-0.4px] leading-6 min-h-[auto] min-w-[auto]">stars</span>
+                        </div>
+                        <div class="items-baseline box-border caret-transparent gap-x-1 flex min-h-[auto] min-w-[auto] gap-y-1">
+                          <span class="font-medium box-border caret-transparent block tracking-[-0.4px] min-h-[auto] min-w-[auto]">160</span>
+                          <span class="text-zinc-500 box-border caret-transparent block tracking-[-0.4px] leading-6 min-h-[auto] min-w-[auto]">contributors</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="box-border caret-transparent flex flex-col min-h-[352px] min-w-[auto] md:min-h-[480px]">
+                      <div class="relative box-border caret-transparent flex flex-col h-full justify-center min-h-[auto] min-w-[auto] overflow-clip pl-10 py-10 md:py-0">
+                        <div class="absolute bg-[url('https://voidzero.dev/assets/rolldown.CyuqNomQ.jpg')] bg-cover box-border caret-transparent bg-center inset-0"></div>
+                        <div class="relative bg-neutral-900 box-border caret-transparent min-h-[auto] min-w-[auto] outline-white/20 outline-offset-2 outline outline-1 z-10 p-2 rounded-bl rounded-tl">
+                          <img src="https://c.animaapp.com/mmutncexOHyleR/assets/rolldown.CauT8S1f.svg" alt="terminal" class="box-border caret-transparent max-w-full" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Oxc -->
+                  <div data-product-card="oxc" class="oss-product-card box-border caret-transparent grid grid-cols-none w-full border-neutral-700 border-t border-solid md:grid-cols-[repeat(2,minmax(0px,1fr))]">
+                    <div class="reveal box-border caret-transparent gap-x-10 flex flex-col justify-between min-h-[auto] min-w-[auto] gap-y-10 p-10 md:gap-x-20 md:gap-y-20">
+                      <div class="box-border caret-transparent gap-x-5 flex flex-col max-w-xs min-h-[auto] min-w-[auto] gap-y-5">
+                        <span class="text-zinc-500 text-xs box-border caret-transparent block tracking-[0.3px] leading-4 min-h-[auto] min-w-[auto] uppercase font-kh_teka_mono">Oxc</span>
+                        <h4 class="text-xl font-medium box-border caret-transparent leading-7 min-h-[auto] min-w-[auto] break-words md:text-3xl md:leading-9">The fastest JavaScript language toolchain</h4>
+                        <p class="text-white/70 box-border caret-transparent leading-6 max-w-[400px] min-h-[auto] min-w-[auto] break-words">Oxc is the foundation of our unified toolchain. It includes linter (oxlint), formatter (oxfmt), parser, resolver, transformer, and minifier, all with state-of-the-art performance.</p>
+                        <a href="https://oxc.rs/" class="explore-btn font-medium items-center box-border caret-transparent gap-x-2 block justify-center leading-6 min-h-[auto] min-w-[auto] outline-neutral-700 outline outline-1 gap-y-2 w-fit overflow-hidden mt-5 px-3 py-1.5 rounded">Explore Oxc</a>
+                      </div>
+                      <div class="items-center bg-neutral-900 box-border caret-transparent gap-x-4 flex min-h-[auto] min-w-[auto] gap-y-4 w-fit px-3 py-1 rounded">
+                        <a href="https://github.com/oxc-project/oxc" class="box-border caret-transparent block min-h-[auto] min-w-[auto] social-icon"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-14.svg" alt="Icon" class="box-border caret-transparent h-5 w-5" /></a>
+                        <div class="items-baseline box-border caret-transparent gap-x-1 flex min-h-[auto] min-w-[auto] gap-y-1">
+                          <span class="font-medium box-border caret-transparent block tracking-[-0.4px] min-h-[auto] min-w-[auto]">20.0k</span>
+                          <span class="text-zinc-500 box-border caret-transparent block tracking-[-0.4px] leading-6 min-h-[auto] min-w-[auto]">stars</span>
+                        </div>
+                        <div class="items-baseline box-border caret-transparent gap-x-1 flex min-h-[auto] min-w-[auto] gap-y-1">
+                          <span class="font-medium box-border caret-transparent block tracking-[-0.4px] min-h-[auto] min-w-[auto]">327</span>
+                          <span class="text-zinc-500 box-border caret-transparent block tracking-[-0.4px] leading-6 min-h-[auto] min-w-[auto]">contributors</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="box-border caret-transparent flex flex-col min-h-[352px] min-w-[auto] md:min-h-[480px]">
+                      <div class="relative box-border caret-transparent flex flex-col h-full justify-center min-h-[auto] min-w-[auto] overflow-clip pl-10">
+                        <div class="absolute bg-[url('https://voidzero.dev/assets/oxc.BLpAMw8X.jpg')] bg-cover box-border caret-transparent bg-center inset-0"></div>
+                        <div class="relative box-border caret-transparent min-h-[auto] min-w-[auto] z-10">
+                          <div class="box-border caret-transparent pointer-events-none">
+                            <img src="https://c.animaapp.com/mmutncexOHyleR/assets/image-6.png" class="aspect-[auto_498_/_498] box-border caret-transparent max-w-full pointer-events-none w-full" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </section>
+
+            <!-- STATS -->
+            <section class="relative box-border caret-transparent gap-x-5 flex flex-col h-36 justify-center max-w-none overflow-x-clip gap-y-5 border-zinc-200 mx-auto px-5 border-x-0 border-solid md:h-48 md:max-w-[1248px] md:px-10 md:border-l md:border-r">
+              <h3 class="reveal text-2xl font-medium box-border caret-transparent tracking-[-0.6px] leading-8 max-w-lg min-h-[auto] min-w-[auto] break-words md:text-[40px] md:tracking-[-1px] md:leading-[53.3333px]">
+                Trusted by millions of developers around the world
+              </h3>
+            </section>
+
+            <section class="relative box-border caret-transparent grid grid-cols-[repeat(1,minmax(0px,1fr))] max-w-none overflow-x-clip border-zinc-200 mx-auto border-x-0 border-t border-solid md:grid-cols-[repeat(2,minmax(0px,1fr))] md:max-w-[1248px] md:border-l md:border-r before:accent-auto before:border-l-zinc-200 before:box-border before:caret-transparent before:text-zinc-900 before:block before:text-base before:not-italic before:normal-nums before:font-normal before:h-0 before:tracking-[normal] before:leading-[22.4px] before:list-outside before:list-disc before:pointer-events-auto before:absolute before:text-start before:no-underline before:indent-[0px] before:normal-case before:top-[-5px] before:visible before:w-0 before:border-r-transparent before:border-y-transparent before:border-separate before:border-[5px] before:border-solid before:left-0 before:font-apk_protocol after:accent-auto after:border-r-zinc-200 after:box-border after:caret-transparent after:text-zinc-900 after:block after:text-base after:not-italic after:normal-nums after:font-normal after:h-0 after:tracking-[normal] after:leading-[22.4px] after:list-outside after:list-disc after:pointer-events-auto after:absolute after:text-start after:no-underline after:indent-[0px] after:normal-case after:top-[-5px] after:visible after:w-0 after:border-l-transparent after:border-y-transparent after:border-separate after:border-[5px] after:border-solid after:right-0 after:font-apk_protocol">
+              <div class="box-border caret-transparent flex flex-col justify-between min-h-[auto] min-w-[auto] border-zinc-200 p-6 border-r-0 border-b border-solid md:p-10 md:border-b-0 md:border-r">
+                <h6 class="text-base font-medium items-center box-border caret-transparent gap-x-2 flex leading-6 min-h-[auto] min-w-[auto] break-words gap-y-2 md:text-xl md:leading-7">
+                  <span class="text-base box-border caret-transparent block leading-6 min-h-[auto] min-w-[auto] break-words md:text-xl md:leading-7">Total downloads</span>
+                </h6>
+                <h1 class="text-4xl font-medium box-border caret-transparent tracking-[-1.8px] leading-10 min-h-[auto] min-w-[auto] break-words md:text-6xl md:tracking-[-3px] md:leading-[67.2px]">
+                  <span class="count-num" data-target="3201070" data-suffix=""></span>
+                </h1>
+              </div>
+              <div class="box-border caret-transparent gap-x-2 flex flex-col justify-between min-h-[auto] min-w-[auto] border-zinc-200 p-6 border-r-0 border-b border-solid md:p-10 md:border-b-0 md:border-r">
+                <h6 class="text-base font-medium items-center box-border caret-transparent gap-x-2 flex leading-6 min-h-[auto] min-w-[auto] break-words gap-y-2 md:text-xl md:leading-7">
+                  <span class="text-base box-border caret-transparent block leading-6 min-h-[auto] min-w-[auto] break-words md:text-xl md:leading-7">Weekly NPM downloads</span>
+                </h6>
+                <h2 class="text-3xl font-medium box-border caret-transparent tracking-[-0.75px] leading-9 min-h-[auto] min-w-[auto] break-words md:text-5xl md:tracking-[-1.2px] md:leading-[48px]">
+                  <span class="count-num" data-target="69" data-suffix="M+"></span>
+                </h2>
+              </div>
+            </section>
+
+            <!-- CONTRIBUTORS STAT -->
+            <section class="relative box-border caret-transparent grid grid-cols-[repeat(1,minmax(0px,1fr))] max-w-none overflow-x-clip border-zinc-200 mx-auto border-x-0 border-t border-solid md:grid-cols-[repeat(2,minmax(0px,1fr))] md:max-w-[1248px] md:border-l md:border-r before:accent-auto before:border-l-zinc-200 before:box-border before:caret-transparent before:text-zinc-900 before:block before:text-base before:not-italic before:normal-nums before:font-normal before:h-0 before:tracking-[normal] before:leading-[22.4px] before:list-outside before:list-disc before:pointer-events-auto before:absolute before:text-start before:no-underline before:indent-[0px] before:normal-case before:top-[-5px] before:visible before:w-0 before:border-r-transparent before:border-y-transparent before:border-separate before:border-[5px] before:border-solid before:left-0 before:font-apk_protocol after:accent-auto after:border-r-zinc-200 after:box-border after:caret-transparent after:text-zinc-900 after:block after:text-base after:not-italic after:normal-nums after:font-normal after:h-0 after:tracking-[normal] after:leading-[22.4px] after:list-outside after:list-disc after:pointer-events-auto after:absolute after:text-start after:no-underline after:indent-[0px] after:normal-case after:top-[-5px] after:visible after:w-0 after:border-l-transparent after:border-y-transparent after:border-separate after:border-[5px] after:border-solid after:right-0 after:font-apk_protocol">
+              <div class="box-border caret-transparent gap-x-2 flex flex-col min-h-[auto] min-w-[auto] gap-y-2 border-zinc-200 p-6 border-r-0 border-b border-solid md:p-10 md:border-b-0 md:border-r">
+                <h2 class="text-3xl font-medium box-border caret-transparent tracking-[-0.75px] leading-9 min-h-[auto] min-w-[auto] break-words md:text-5xl md:tracking-[-1.2px] md:leading-[48px]">
+                  <span class="count-num" data-target="2" data-suffix="K+"></span>
+                </h2>
+                <p class="text-zinc-500 text-base box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words md:text-lg md:leading-7">Contributors</p>
+              </div>
+            </section>
+
+            <!-- MISSION -->
+            <section id="about" class="relative items-center bg-stone-50 box-border caret-transparent gap-x-10 flex flex-col max-w-none overflow-x-clip gap-y-10 border-zinc-200 mx-auto px-5 py-10 border-x-0 border-t border-solid md:max-w-[1248px] md:px-10 md:py-40 md:border-l md:border-r before:accent-auto before:border-l-zinc-200 before:box-border before:caret-transparent before:text-zinc-900 before:block before:text-base before:not-italic before:normal-nums before:font-normal before:h-0 before:tracking-[normal] before:leading-[22.4px] before:list-outside before:list-disc before:pointer-events-auto before:absolute before:text-start before:no-underline before:indent-[0px] before:normal-case before:top-[-5px] before:visible before:w-0 before:border-r-transparent before:border-y-transparent before:border-separate before:border-[5px] before:border-solid before:left-0 before:font-apk_protocol after:accent-auto after:border-r-zinc-200 after:box-border after:caret-transparent after:text-zinc-900 after:block after:text-base after:not-italic after:normal-nums after:font-normal after:h-0 after:tracking-[normal] after:leading-[22.4px] after:list-outside after:list-disc after:pointer-events-auto after:absolute after:text-start after:no-underline after:indent-[0px] after:normal-case after:top-[-5px] after:visible after:w-0 after:border-l-transparent after:border-y-transparent after:border-separate after:border-[5px] after:border-solid after:right-0 after:font-apk_protocol">
+              <h3 class="reveal text-2xl font-medium box-border caret-transparent tracking-[-0.6px] leading-8 max-w-[720px] min-h-[auto] min-w-[auto] break-words text-center mx-auto md:text-[40px] md:tracking-[-1px] md:leading-[53.3333px]">
+                Our mission is to make the next generation of JavaScript developers more productive than ever before.
+              </h3>
+              <div class="reveal reveal-delay-1 items-baseline box-border caret-transparent gap-x-6 flex min-h-[auto] min-w-[auto] gap-y-6">
+                <a href="#about" class="btn-outline-dark font-medium items-center bg-white box-border caret-transparent gap-x-2 flex justify-center min-h-[auto] min-w-[auto] outline-zinc-200 outline outline-1 gap-y-2 overflow-hidden px-4 py-2 rounded-lg">Learn more</a>
+              </div>
+            </section>
+
+            <!-- BACKED BY -->
+            <section class="relative items-center bg-stone-50 box-border caret-transparent grid grid-cols-[repeat(1,minmax(0px,1fr))] max-w-none overflow-x-clip border-zinc-200 mx-auto border-x-0 border-t border-solid md:grid-cols-[repeat(10,minmax(0px,1fr))] md:max-w-[1248px] md:border-l md:border-r before:accent-auto before:border-l-zinc-200 before:box-border before:caret-transparent before:text-zinc-900 before:block before:text-base before:not-italic before:normal-nums before:font-normal before:h-0 before:tracking-[normal] before:leading-[22.4px] before:list-outside before:list-disc before:pointer-events-auto before:absolute before:text-start before:no-underline before:indent-[0px] before:normal-case before:top-[-5px] before:visible before:w-0 before:border-r-transparent before:border-y-transparent before:border-separate before:border-[5px] before:border-solid before:left-0 before:font-apk_protocol after:accent-auto after:border-r-zinc-200 after:box-border after:caret-transparent after:text-zinc-900 after:block after:text-base after:not-italic after:normal-nums after:font-normal after:h-0 after:tracking-[normal] after:leading-[22.4px] after:list-outside after:list-disc after:pointer-events-auto after:absolute after:text-start after:no-underline after:indent-[0px] after:normal-case after:top-[-5px] after:visible after:w-0 after:border-l-transparent after:border-y-transparent after:border-separate after:border-[5px] after:border-solid after:right-0 after:font-apk_protocol">
+              <div class="box-border caret-transparent col-end-[span_4] col-start-[span_4] min-h-[auto] min-w-[auto] text-center border-zinc-200 px-5 py-6 border-b border-solid md:text-start md:px-10 md:py-0 md:border-b-0">
+                <p class="text-base box-border caret-transparent leading-6 break-words text-center md:text-lg md:leading-7 md:text-start">Backed by the very best in the dev tools space.</p>
+              </div>
+            </section>
+
+            <!-- SPACER -->
+            <section class="relative box-border caret-transparent h-16 max-w-none overflow-x-clip border-zinc-200 mx-auto border-x-0 border-t border-solid md:h-[120px] md:max-w-[1248px] md:border-l md:border-r before:accent-auto before:border-l-zinc-200 before:box-border before:caret-transparent before:text-zinc-900 before:block before:text-base before:not-italic before:normal-nums before:font-normal before:h-0 before:tracking-[normal] before:leading-[22.4px] before:list-outside before:list-disc before:pointer-events-auto before:absolute before:text-start before:no-underline before:indent-[0px] before:normal-case before:top-[-5px] before:visible before:w-0 before:border-r-transparent before:border-y-transparent before:border-separate before:border-[5px] before:border-solid before:left-0 before:font-apk_protocol after:accent-auto after:border-r-zinc-200 after:box-border after:caret-transparent after:text-zinc-900 after:block after:text-base after:not-italic after:normal-nums after:font-normal after:h-0 after:tracking-[normal] after:leading-[22.4px] after:list-outside after:list-disc after:pointer-events-auto after:absolute after:text-start after:no-underline after:indent-[0px] after:normal-case after:top-[-5px] after:visible after:w-0 after:border-l-transparent after:border-y-transparent after:border-separate after:border-[5px] after:border-solid after:right-0 after:font-apk_protocol"></section>
+
+            <!-- BLOG CAROUSEL -->
+            <section id="blog" class="relative box-border caret-transparent grid grid-cols-[repeat(1,minmax(0px,1fr))] h-auto max-w-none overflow-x-clip border-zinc-200 mx-auto border-x-0 border-t border-solid md:grid-cols-[repeat(10,minmax(0px,1fr))] md:h-[520px] md:max-w-[1248px] md:border-l md:border-r before:accent-auto before:border-l-zinc-200 before:box-border before:caret-transparent before:text-zinc-900 before:block before:text-base before:not-italic before:normal-nums before:font-normal before:h-0 before:tracking-[normal] before:leading-[22.4px] before:list-outside before:list-disc before:pointer-events-auto before:absolute before:text-start before:no-underline before:indent-[0px] before:normal-case before:top-[-5px] before:visible before:w-0 before:border-r-transparent before:border-y-transparent before:border-separate before:border-[5px] before:border-solid before:left-0 before:font-apk_protocol after:accent-auto after:border-r-zinc-200 after:box-border after:caret-transparent after:text-zinc-900 after:block after:text-base after:not-italic after:normal-nums after:font-normal after:h-0 after:tracking-[normal] after:leading-[22.4px] after:list-outside after:list-disc after:pointer-events-auto after:absolute after:text-start after:no-underline after:indent-[0px] after:normal-case after:top-[-5px] after:visible after:w-0 after:border-l-transparent after:border-y-transparent after:border-separate after:border-[5px] after:border-solid after:right-0 after:font-apk_protocol">
+              <div class="box-border caret-transparent flex flex-col col-end-auto col-start-auto min-h-[auto] min-w-[auto] border-zinc-200 border-r-0 border-solid md:col-end-[span_4] md:col-start-[span_4] md:border-r">
+                <div class="box-border caret-transparent gap-x-6 flex flex-col grow-0 h-auto justify-center min-h-[auto] min-w-[auto] gap-y-6 border-zinc-200 p-5 border-b border-solid md:gap-x-10 md:grow md:h-72 md:justify-start md:gap-y-10 md:p-10">
+                  <h3 class="reveal text-2xl font-medium box-border caret-transparent tracking-[-0.6px] leading-8 min-h-[auto] min-w-[auto] break-words md:text-[40px] md:tracking-[-1px] md:leading-[53.3333px]">
+                    Featured resources &amp; updates
+                  </h3>
+                  <a href="#blog" class="reveal reveal-delay-1 btn-outline-dark font-medium items-center bg-white box-border caret-transparent gap-x-2 flex justify-center min-h-[auto] min-w-[auto] outline-zinc-200 outline outline-1 gap-y-2 w-fit overflow-hidden px-4 py-2 rounded-lg">All Resources</a>
+                </div>
+                <div class="relative box-border caret-transparent gap-x-4 flex flex-col min-h-[auto] min-w-[auto] gap-y-4 pt-16 pb-6 px-6 md:pb-8 md:px-10">
+                  <span class="absolute text-xs bg-stone-200/40 box-border caret-transparent block leading-4 p-2 rounded left-3 top-3 font-kh_teka_mono">js</span>
+                  <div class="box-border caret-transparent gap-x-0 flex flex-col min-h-[auto] min-w-[auto] gap-y-0">
+                    <div class="text-zinc-500 text-xs box-border caret-transparent leading-4 min-h-[auto] min-w-[auto] font-kh_teka_mono">resources</div>
+                    <div class="text-xs box-border caret-transparent leading-4 min-h-[auto] min-w-[auto] font-kh_teka_mono">.filter<span class="text-zinc-500 box-border caret-transparent">(i =&gt; i.collection ===</span> "featured"<span class="text-zinc-500 box-border caret-transparent">)</span></div>
+                    <div class="text-xs box-border caret-transparent leading-4 min-h-[auto] min-w-[auto] font-kh_teka_mono">.filter<span class="text-zinc-500 box-border caret-transparent">(i =&gt; i.postedBy ===</span> "VoidZero"<span class="text-zinc-500 box-border caret-transparent">)</span></div>
+                    <div class="text-xs box-border caret-transparent leading-4 min-h-[auto] min-w-[auto] font-kh_teka_mono">.filter<span class="text-zinc-500 box-border caret-transparent">(i =&gt; i.articles.length ===</span> 8<span class="text-zinc-500 box-border caret-transparent">)</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="box-border caret-transparent col-end-[span_1] col-start-[span_1] min-h-[auto] min-w-[auto] border-zinc-200 border-t border-solid md:col-end-[span_6] md:col-start-[span_6] md:border-t-0">
+                <section aria-label="Gallery" class="relative box-border caret-transparent z-[1] pt-10 pb-[60px] overflow-hidden md:pb-10">
+                  <!-- Carousel viewport -->
+                  <div class="box-border caret-transparent h-full w-full overflow-hidden">
+                    <ol id="carousel-ol" class="carousel-list gap-x-0 h-full list-none gap-y-0 pl-0 w-full">
+                      <li class="text-zinc-500 text-base items-center box-border caret-transparent flex shrink-0 justify-center leading-6 min-h-[auto] min-w-[auto] break-words md:text-lg md:leading-7">
+                        <a href="/posts/announcing-vite-plus-alpha" class="blog-card text-base aspect-square bg-white box-border caret-transparent flex flex-col leading-6 min-h-[auto] min-w-[auto] outline-zinc-200 outline outline-1 break-words w-[300px] overflow-hidden ml-5 my-1 rounded md:text-lg md:leading-7 md:w-[336px] md:ml-4">
+                          <div class="text-base aspect-[2_/_1] box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words w-full overflow-hidden md:text-lg md:leading-7"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/announcing-vite-plus-alpha.jpg" alt="Announcing Vite+ Alpha" class="text-base box-border caret-transparent h-full leading-6 max-w-full object-cover break-words w-full transition-transform hover:scale-105" /></div>
+                          <div class="text-base box-border caret-transparent gap-x-4 flex flex-col leading-6 min-h-[auto] min-w-[auto] break-words gap-y-4 p-5 md:text-lg md:leading-7">
+                            <span class="text-xs box-border caret-transparent block tracking-[1.2px] leading-4 min-h-[auto] min-w-[auto] break-words uppercase font-kh_teka_mono">// announcements</span>
+                            <h4 class="text-zinc-900 text-xl box-border caret-transparent leading-7 min-h-[auto] min-w-[auto] break-words">Announcing Vite+ Alpha</h4>
+                          </div>
+                        </a>
+                      </li>
+                      <li class="text-zinc-500 text-base items-center box-border caret-transparent flex shrink-0 justify-center leading-6 min-h-[auto] min-w-[auto] break-words md:text-lg md:leading-7">
+                        <a href="/posts/npmx-alpha" class="blog-card text-base aspect-square bg-white box-border caret-transparent flex flex-col leading-6 min-h-[auto] min-w-[auto] outline-zinc-200 outline outline-1 break-words w-[300px] overflow-hidden ml-5 my-1 rounded md:text-lg md:leading-7 md:w-[336px] md:ml-4">
+                          <div class="text-base aspect-[2_/_1] box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words w-full overflow-hidden md:text-lg md:leading-7"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/announcing-vite-plus-alpha.jpg" alt="npmx Alpha" class="text-base box-border caret-transparent h-full leading-6 max-w-full object-cover break-words w-full transition-transform hover:scale-105" /></div>
+                          <div class="text-base box-border caret-transparent gap-x-4 flex flex-col leading-6 min-h-[auto] min-w-[auto] break-words gap-y-4 p-5 md:text-lg md:leading-7">
+                            <span class="text-xs box-border caret-transparent block tracking-[1.2px] leading-4 min-h-[auto] min-w-[auto] break-words uppercase font-kh_teka_mono">// announcements</span>
+                            <h4 class="text-zinc-900 text-xl box-border caret-transparent leading-7 min-h-[auto] min-w-[auto] break-words">npmx Alpha: The smarter npm runner</h4>
+                          </div>
+                        </a>
+                      </li>
+                      <li class="text-zinc-500 text-base items-center box-border caret-transparent flex shrink-0 justify-center leading-6 min-h-[auto] min-w-[auto] break-words md:text-lg md:leading-7">
+                        <a href="/posts/whats-new-feb-2026" class="blog-card text-base aspect-square bg-white box-border caret-transparent flex flex-col leading-6 min-h-[auto] min-w-[auto] outline-zinc-200 outline outline-1 break-words w-[300px] overflow-hidden ml-5 my-1 rounded md:text-lg md:leading-7 md:w-[336px] md:ml-4">
+                          <div class="text-base aspect-[2_/_1] box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words w-full overflow-hidden md:text-lg md:leading-7"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/update-2026-feb.jpg" alt="What's New Feb 2026" class="text-base box-border caret-transparent h-full leading-6 max-w-full object-cover break-words w-full transition-transform hover:scale-105" /></div>
+                          <div class="text-base box-border caret-transparent gap-x-4 flex flex-col leading-6 min-h-[auto] min-w-[auto] break-words gap-y-4 p-5 md:text-lg md:leading-7">
+                            <span class="text-xs box-border caret-transparent block tracking-[1.2px] leading-4 min-h-[auto] min-w-[auto] break-words uppercase font-kh_teka_mono">// updates</span>
+                            <h4 class="text-zinc-900 text-xl box-border caret-transparent leading-7 min-h-[auto] min-w-[auto] break-words">What's New in ViteLand: February 2026 Recap</h4>
+                          </div>
+                        </a>
+                      </li>
+                      <li class="text-zinc-500 text-base items-center box-border caret-transparent flex shrink-0 justify-center leading-6 min-h-[auto] min-w-[auto] break-words md:text-lg md:leading-7">
+                        <a href="/posts/whats-new-jan-2026" class="blog-card text-base aspect-square bg-white box-border caret-transparent flex flex-col leading-6 min-h-[auto] min-w-[auto] outline-zinc-200 outline outline-1 break-words w-[300px] overflow-hidden ml-5 my-1 rounded md:text-lg md:leading-7 md:w-[336px] md:ml-4">
+                          <div class="text-base aspect-[2_/_1] box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words w-full overflow-hidden md:text-lg md:leading-7"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/update-2026-jan.jpg" alt="What's New Jan 2026" class="text-base box-border caret-transparent h-full leading-6 max-w-full object-cover break-words w-full transition-transform hover:scale-105" /></div>
+                          <div class="text-base box-border caret-transparent gap-x-4 flex flex-col leading-6 min-h-[auto] min-w-[auto] break-words gap-y-4 p-5 md:text-lg md:leading-7">
+                            <span class="text-xs box-border caret-transparent block tracking-[1.2px] leading-4 min-h-[auto] min-w-[auto] break-words uppercase font-kh_teka_mono">// updates</span>
+                            <h4 class="text-zinc-900 text-xl box-border caret-transparent leading-7 min-h-[auto] min-w-[auto] break-words">What's New in ViteLand: January 2026 Recap</h4>
+                          </div>
+                        </a>
+                      </li>
+                      <li class="text-zinc-500 text-base items-center box-border caret-transparent flex shrink-0 justify-center leading-6 min-h-[auto] min-w-[auto] break-words md:text-lg md:leading-7">
+                        <a href="/posts/announcing-rolldown-rc" class="blog-card text-base aspect-square bg-white box-border caret-transparent flex flex-col leading-6 min-h-[auto] min-w-[auto] outline-zinc-200 outline outline-1 break-words w-[300px] overflow-hidden ml-5 my-1 rounded md:text-lg md:leading-7 md:w-[336px] md:ml-4">
+                          <div class="text-base aspect-[2_/_1] box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words w-full overflow-hidden md:text-lg md:leading-7"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/announcing-rolldown-rc.jpg" alt="Rolldown RC" class="text-base box-border caret-transparent h-full leading-6 max-w-full object-cover break-words w-full transition-transform hover:scale-105" /></div>
+                          <div class="text-base box-border caret-transparent gap-x-4 flex flex-col leading-6 min-h-[auto] min-w-[auto] break-words gap-y-4 p-5 md:text-lg md:leading-7">
+                            <span class="text-xs box-border caret-transparent block tracking-[1.2px] leading-4 min-h-[auto] min-w-[auto] break-words uppercase font-kh_teka_mono">// announcements</span>
+                            <h4 class="text-zinc-900 text-xl box-border caret-transparent leading-7 min-h-[auto] min-w-[auto] break-words">Announcing Rolldown 1.0 RC</h4>
+                          </div>
+                        </a>
+                      </li>
+                      <li class="text-zinc-500 text-base items-center box-border caret-transparent flex shrink-0 justify-center leading-6 min-h-[auto] min-w-[auto] break-words md:text-lg md:leading-7">
+                        <a href="/posts/whats-new-dec-2025" class="blog-card text-base aspect-square bg-white box-border caret-transparent flex flex-col leading-6 min-h-[auto] min-w-[auto] outline-zinc-200 outline outline-1 break-words w-[300px] overflow-hidden ml-5 my-1 rounded md:text-lg md:leading-7 md:w-[336px] md:ml-4">
+                          <div class="text-base aspect-[2_/_1] box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words w-full overflow-hidden md:text-lg md:leading-7"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/update-2025-dec.jpg" alt="Dec 2025 Recap" class="text-base box-border caret-transparent h-full leading-6 max-w-full object-cover break-words w-full transition-transform hover:scale-105" /></div>
+                          <div class="text-base box-border caret-transparent gap-x-4 flex flex-col leading-6 min-h-[auto] min-w-[auto] break-words gap-y-4 p-5 md:text-lg md:leading-7">
+                            <span class="text-xs box-border caret-transparent block tracking-[1.2px] leading-4 min-h-[auto] min-w-[auto] break-words uppercase font-kh_teka_mono">// updates</span>
+                            <h4 class="text-zinc-900 text-xl box-border caret-transparent leading-7 min-h-[auto] min-w-[auto] break-words">What's New in ViteLand: December 2025 Recap</h4>
+                          </div>
+                        </a>
+                      </li>
+                      <li class="text-zinc-500 text-base items-center box-border caret-transparent flex shrink-0 justify-center leading-6 min-h-[auto] min-w-[auto] break-words md:text-lg md:leading-7">
+                        <a href="/posts/announcing-oxlint-type-aware-linting-alpha" class="blog-card text-base aspect-square bg-white box-border caret-transparent flex flex-col leading-6 min-h-[auto] min-w-[auto] outline-zinc-200 outline outline-1 break-words w-[300px] overflow-hidden ml-5 my-1 rounded md:text-lg md:leading-7 md:w-[336px] md:ml-4">
+                          <div class="text-base aspect-[2_/_1] box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words w-full overflow-hidden md:text-lg md:leading-7"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/announcing-oxlint-type-aware-linting-alpha.jpg" alt="Oxlint Alpha" class="text-base box-border caret-transparent h-full leading-6 max-w-full object-cover break-words w-full transition-transform hover:scale-105" /></div>
+                          <div class="text-base box-border caret-transparent gap-x-4 flex flex-col leading-6 min-h-[auto] min-w-[auto] break-words gap-y-4 p-5 md:text-lg md:leading-7">
+                            <span class="text-xs box-border caret-transparent block tracking-[1.2px] leading-4 min-h-[auto] min-w-[auto] break-words uppercase font-kh_teka_mono">// announcements</span>
+                            <h4 class="text-zinc-900 text-xl box-border caret-transparent leading-7 min-h-[auto] min-w-[auto] break-words">Announcing Oxlint Type-Aware Linting Alpha</h4>
+                          </div>
+                        </a>
+                      </li>
+                      <li class="text-zinc-500 text-base items-center box-border caret-transparent flex shrink-0 justify-center leading-6 min-h-[auto] min-w-[auto] break-words pr-5 md:text-lg md:leading-7">
+                        <a href="/posts/whats-new-nov-2025" class="blog-card text-base aspect-square bg-white box-border caret-transparent flex flex-col leading-6 min-h-[auto] min-w-[auto] outline-zinc-200 outline outline-1 break-words w-[300px] overflow-hidden ml-5 my-1 rounded md:text-lg md:leading-7 md:w-[336px] md:ml-4">
+                          <div class="text-base aspect-[2_/_1] box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words w-full overflow-hidden md:text-lg md:leading-7"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/update-2025-nov.jpg" alt="Nov 2025 Recap" class="text-base box-border caret-transparent h-full leading-6 max-w-full object-cover break-words w-full transition-transform hover:scale-105" /></div>
+                          <div class="text-base box-border caret-transparent gap-x-4 flex flex-col leading-6 min-h-[auto] min-w-[auto] break-words gap-y-4 p-5 md:text-lg md:leading-7">
+                            <span class="text-xs box-border caret-transparent block tracking-[1.2px] leading-4 min-h-[auto] min-w-[auto] break-words uppercase font-kh_teka_mono">// updates</span>
+                            <h4 class="text-zinc-900 text-xl box-border caret-transparent leading-7 min-h-[auto] min-w-[auto] break-words">What's New in ViteLand: November 2025 Recap</h4>
+                          </div>
+                        </a>
+                      </li>
+                    </ol>
+                  </div>
+                  <!-- Carousel dots -->
+                  <ol id="carousel-dots" class="absolute box-border caret-transparent gap-x-2 flex justify-center list-none gap-y-2 pl-0 left-5 bottom-4 md:left-8 md:bottom-2">
+                  </ol>
+                </section>
+              </div>
+            </section>
+
+            <!-- SPACER -->
+            <section class="relative box-border caret-transparent h-16 max-w-none overflow-x-clip border-zinc-200 mx-auto border-x-0 border-t border-solid md:h-[120px] md:max-w-[1248px] md:border-l md:border-r before:accent-auto before:border-l-zinc-200 before:box-border before:caret-transparent before:text-zinc-900 before:block before:text-base before:not-italic before:normal-nums before:font-normal before:h-0 before:tracking-[normal] before:leading-[22.4px] before:list-outside before:list-disc before:pointer-events-auto before:absolute before:text-start before:no-underline before:indent-[0px] before:normal-case before:top-[-5px] before:visible before:w-0 before:border-r-transparent before:border-y-transparent before:border-separate before:border-[5px] before:border-solid before:left-0 before:font-apk_protocol after:accent-auto after:border-r-zinc-200 after:box-border after:caret-transparent after:text-zinc-900 after:block after:text-base after:not-italic after:normal-nums after:font-normal after:h-0 after:tracking-[normal] after:leading-[22.4px] after:list-outside after:list-disc after:pointer-events-auto after:absolute after:text-start after:no-underline after:indent-[0px] after:normal-case after:top-[-5px] after:visible after:w-0 after:border-l-transparent after:border-y-transparent after:border-separate after:border-[5px] after:border-solid after:right-0 after:font-apk_protocol"></section>
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="text-white bg-zinc-900 box-border caret-transparent">
+          <section class="relative box-border caret-transparent max-w-none overflow-x-clip border-neutral-700 mx-auto border-x-0 border-solid md:max-w-[1248px] md:border-l md:border-r">
+            <div class="items-center box-border caret-transparent gap-x-10 grid grid-cols-[repeat(1,minmax(0px,1fr))] gap-y-10 text-center px-5 py-10 md:items-start md:gap-x-16 md:grid-cols-[repeat(2,minmax(0px,1fr))] md:gap-y-16 md:text-left md:px-10 md:py-[120px]">
+              <div class="box-border caret-transparent max-w-xl min-h-[auto] min-w-[auto] text-center mx-auto md:text-left md:mx-0">
+                <h2 class="reveal text-3xl font-medium box-border caret-transparent tracking-[-0.75px] leading-9 break-words text-center md:text-5xl md:tracking-[-1.2px] md:leading-[48px] md:text-left">
+                  Interested in the future of Javascript tooling?
+                </h2>
+              </div>
+              <div class="items-center box-border caret-transparent gap-x-4 flex flex-col justify-self-auto max-w-md min-h-[auto] min-w-[auto] gap-y-4 text-center w-full mx-auto md:items-stretch md:justify-self-end md:text-left md:mx-0">
+                <h3 class="reveal reveal-delay-1 text-xl box-border caret-transparent tracking-[-0.5px] leading-7 min-h-[auto] min-w-[auto] break-words text-center md:text-2xl md:tracking-[-0.6px] md:leading-8 md:text-left">
+                  Subscribe to our monthly newsletter
+                </h3>
+                <form id="newsletter-form" class="reveal reveal-delay-2 box-border caret-transparent min-h-[auto] min-w-[auto] text-center md:text-left" onsubmit="handleNewsletterSubmit(event)">
+                  <div id="newsletter-form-wrap" class="relative items-center box-border caret-transparent flex text-center border overflow-hidden rounded border-solid border-white/20 md:text-left" style="transition: border-color 0.2s ease;">
+                    <input id="newsletter-email" value="" type="email" placeholder="Your email address" required class="text-sm bg-transparent box-border caret-white block basis-[0%] grow leading-5 min-h-[auto] min-w-[auto] p-3 md:text-base md:leading-6 md:px-5 md:py-4 placeholder-white/40" style="outline:none;" />
+                    <button id="newsletter-btn" type="submit" class="text-zinc-900 text-sm font-medium bg-white caret-transparent block shrink-0 leading-5 min-h-[auto] min-w-[auto] text-center text-nowrap mr-1.5 px-3 py-2 rounded transition-all hover:bg-zinc-100 active:scale-95 md:mr-2 md:px-6">
+                      Subscribe
+                    </button>
+                  </div>
+                  <p id="newsletter-msg" class="text-xs mt-2 text-green-400 hidden">Thanks for subscribing!</p>
+                  <p id="newsletter-err" class="text-xs mt-2 text-red-400 hidden">Please enter a valid email.</p>
+                </form>
+              </div>
+            </div>
+            <!-- Footer logo image -->
+            <div class="relative items-center aspect-[4_/_1] box-border caret-transparent flex justify-center w-full md:aspect-[6.4_/_1]">
+              <img src="https://c.animaapp.com/mmutncexOHyleR/assets/footer.C-44yuQw.jpg" alt="VoidZero" class="absolute box-border caret-transparent h-full max-w-full object-cover w-full z-0 inset-0" />
+              <img src="https://c.animaapp.com/mmutncexOHyleR/assets/image-8.svg" alt="VoidZeroLogo" class="relative box-border caret-transparent h-12 max-w-full min-h-[auto] min-w-[auto] w-12 md:h-20 md:w-20" />
+            </div>
+            <!-- Footer nav -->
+            <div class="items-center box-border caret-transparent gap-x-10 flex flex-col justify-center gap-y-10 text-center pt-10 pb-16 px-5 md:items-start md:gap-x-0 md:flex-row md:justify-between md:gap-y-0 md:text-left md:pt-16 md:pb-40 md:px-24">
+              <div class="items-center box-border caret-transparent gap-x-10 flex flex-col min-h-[auto] min-w-[auto] gap-y-10 text-center md:items-start md:gap-x-20 md:flex-row md:gap-y-20 md:text-left">
+                <div class="box-border caret-transparent min-h-[auto] min-w-[auto] text-center md:text-left">
+                  <p class="text-zinc-500 text-xs box-border caret-transparent tracking-[0.3px] leading-4 break-words text-center uppercase mb-8 font-kh_teka_mono md:text-left">Product</p>
+                  <ul class="box-border caret-transparent gap-x-3 flex flex-col list-none gap-y-3 text-center pl-0 md:text-left">
+                    <li class="text-zinc-500 text-base box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words text-center md:text-lg md:leading-7 md:text-left"><a href="https://void.cloud/" class="footer-link text-white box-border caret-transparent leading-6 break-words text-center md:text-left">Void</a></li>
+                  </ul>
+                </div>
+                <div class="box-border caret-transparent min-h-[auto] min-w-[auto] text-center md:text-left">
+                  <p class="text-zinc-500 text-xs box-border caret-transparent tracking-[0.3px] leading-4 break-words text-center uppercase mb-8 font-kh_teka_mono md:text-left">OSS</p>
+                  <ul class="box-border caret-transparent gap-x-3 flex flex-col list-none gap-y-3 text-center pl-0 md:text-left">
+                    <li class="text-zinc-500 text-base box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words text-center md:text-lg md:leading-7 md:text-left"><a href="https://viteplus.dev/" class="footer-link text-white box-border caret-transparent leading-6 break-words text-center md:text-left">Vite+</a></li>
+                    <li class="text-zinc-500 text-base box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words text-center md:text-lg md:leading-7 md:text-left"><a href="https://vite.dev/" class="footer-link text-white box-border caret-transparent leading-6 break-words text-center md:text-left">Vite</a></li>
+                    <li class="text-zinc-500 text-base box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words text-center md:text-lg md:leading-7 md:text-left"><a href="https://vitest.dev/" class="footer-link text-white box-border caret-transparent leading-6 break-words text-center md:text-left">Vitest</a></li>
+                    <li class="text-zinc-500 text-base box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words text-center md:text-lg md:leading-7 md:text-left"><a href="https://rolldown.rs/" class="footer-link text-white box-border caret-transparent leading-6 break-words text-center md:text-left">Rolldown</a></li>
+                    <li class="text-zinc-500 text-base box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words text-center md:text-lg md:leading-7 md:text-left"><a href="https://oxc.rs/" class="footer-link text-white box-border caret-transparent leading-6 break-words text-center md:text-left">Oxc</a></li>
+                  </ul>
+                </div>
+                <div class="box-border caret-transparent min-h-[auto] min-w-[auto] text-center md:text-left">
+                  <p class="text-zinc-500 text-xs box-border caret-transparent tracking-[0.3px] leading-4 break-words text-center uppercase mb-8 font-kh_teka_mono md:text-left">Company</p>
+                  <ul class="box-border caret-transparent gap-x-3 flex flex-col list-none gap-y-3 text-center pl-0 md:text-left">
+                    <li class="text-zinc-500 text-base box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words text-center md:text-lg md:leading-7 md:text-left"><a href="#blog" class="footer-link text-white box-border caret-transparent leading-6 break-words text-center md:text-left">Blog</a></li>
+                    <li class="text-zinc-500 text-base box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words text-center md:text-lg md:leading-7 md:text-left"><a href="#about" class="footer-link text-white box-border caret-transparent leading-6 break-words text-center md:text-left">About</a></li>
+                    <li class="text-zinc-500 text-base box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words text-center md:text-lg md:leading-7 md:text-left"><a href="https://github.com/voidzero-dev/community-design-resources/tree/main/brand-assets" class="footer-link text-white box-border caret-transparent leading-6 break-words text-center md:text-left">Branding</a></li>
+                    <li class="text-zinc-500 text-base box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words text-center md:text-lg md:leading-7 md:text-left"><a href="#" class="footer-link text-white box-border caret-transparent leading-6 break-words text-center md:text-left">Terms of Service</a></li>
+                    <li class="text-zinc-500 text-base box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words text-center md:text-lg md:leading-7 md:text-left"><a href="#" class="footer-link text-white box-border caret-transparent leading-6 break-words text-center md:text-left">Privacy Policy</a></li>
+                    <li class="text-zinc-500 text-base box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words text-center md:text-lg md:leading-7 md:text-left"><a href="#" class="footer-link text-white box-border caret-transparent leading-6 break-words text-center md:text-left">Acceptable Use Policy</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="items-center box-border caret-transparent flex flex-col min-h-[auto] min-w-[auto] text-center md:items-start md:text-left">
+                <p class="text-zinc-500 text-xs box-border caret-transparent tracking-[0.3px] leading-4 min-h-[auto] min-w-[auto] break-words text-center uppercase mb-8 font-kh_teka_mono md:text-left">Social</p>
+                <ul class="box-border caret-transparent gap-x-3 flex flex-col list-none min-h-[auto] min-w-[auto] gap-y-3 text-center pl-0 md:text-left">
+                  <li class="text-zinc-500 text-base box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words text-center md:text-lg md:leading-7 md:text-left">
+                    <a href="https://github.com/voidzero-dev" class="footer-link text-white items-center box-border caret-transparent gap-x-3 flex leading-6 break-words gap-y-3 text-center justify-center md:text-left md:justify-start"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-14.svg" alt="" class="box-border caret-transparent h-5 w-5" />GitHub</a>
+                  </li>
+                  <li class="text-zinc-500 text-base box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words text-center md:text-lg md:leading-7 md:text-left">
+                    <a href="https://x.com/voidzerodev" class="footer-link text-white items-center box-border caret-transparent gap-x-3 flex leading-6 break-words gap-y-3 text-center justify-center md:text-left md:justify-start"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-16.svg" alt="" class="box-border caret-transparent h-5 w-5" />X.com</a>
+                  </li>
+                  <li class="text-zinc-500 text-base box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words text-center md:text-lg md:leading-7 md:text-left">
+                    <a href="https://discord.gg/cC6TEVFKSx" class="footer-link text-white items-center box-border caret-transparent gap-x-3 flex leading-6 break-words gap-y-3 text-center justify-center md:text-left md:justify-start"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-17.svg" alt="" class="box-border caret-transparent h-5 w-5" />Discord</a>
+                  </li>
+                  <li class="text-zinc-500 text-base box-border caret-transparent leading-6 min-h-[auto] min-w-[auto] break-words text-center md:text-lg md:leading-7 md:text-left">
+                    <a href="https://bsky.app/profile/voidzero.dev" class="footer-link text-white items-center box-border caret-transparent gap-x-3 flex leading-6 break-words gap-y-3 text-center justify-center md:text-left md:justify-start"><img src="https://c.animaapp.com/mmutncexOHyleR/assets/icon-18.svg" alt="" class="box-border caret-transparent h-5 w-5" />Bluesky</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+          <section class="relative items-center box-border caret-transparent gap-x-3 flex flex-col justify-between max-w-none overflow-x-clip gap-y-3 text-center border-neutral-700 mx-auto p-5 border-x-0 border-t border-solid md:gap-x-0 md:flex-row md:max-w-[1248px] md:gap-y-0 md:text-left md:px-24 md:border-l md:border-r before:accent-auto before:border-l-neutral-700 before:box-border before:caret-transparent before:text-white before:block before:text-base before:not-italic before:normal-nums before:font-normal before:h-0 before:tracking-[normal] before:leading-[22.4px] before:list-outside before:list-disc before:pointer-events-auto before:absolute before:text-center before:no-underline before:indent-[0px] before:normal-case before:top-[-5px] before:visible before:w-0 before:border-r-transparent before:border-y-transparent before:border-separate before:border-[5px] before:border-solid before:left-0 before:font-apk_protocol before:md:text-left after:accent-auto after:border-r-neutral-700 after:box-border after:caret-transparent after:text-white after:block after:text-base after:not-italic after:normal-nums after:font-normal after:h-0 after:tracking-[normal] after:leading-[22.4px] after:list-outside after:list-disc after:pointer-events-auto after:absolute after:text-center after:no-underline after:indent-[0px] after:normal-case after:top-[-5px] after:visible after:w-0 after:border-l-transparent after:border-y-transparent after:border-separate after:border-[5px] after:border-solid after:right-0 after:font-apk_protocol after:md:text-left">
+            <p class="text-zinc-500 text-sm box-border caret-transparent leading-5 min-h-[auto] min-w-[auto] break-words text-center md:text-left">
+              © 2026 VoidZero Inc.
+              <span class="box-border caret-transparent hidden break-words text-center md:inline md:text-left">All Rights Reserved.</span>
+            </p>
+          </section>
+        </footer>
+
+      </div>
+    </div>
+
+    <script>
+      // ─────────────────────────────────────────
+      // BANNER DISMISS
+      // ─────────────────────────────────────────
+      document.getElementById('banner-close').addEventListener('click', function() {
+        var banner = document.getElementById('top-banner');
+        banner.classList.add('dismissed');
+        setTimeout(function() { banner.style.display = 'none'; }, 380);
+      });
+
+      // ─────────────────────────────────────────
+      // MOBILE MENU TOGGLE
+      // ─────────────────────────────────────────
+      var menuOpen = false;
+      var hamburgerBtn = document.getElementById('hamburger-btn');
+      var mobileMenu = document.getElementById('mobile-menu');
+      var hamburgerIcon = document.getElementById('hamburger-icon');
+
+      hamburgerBtn.addEventListener('click', function() {
+        menuOpen = !menuOpen;
+        if (menuOpen) {
+          mobileMenu.classList.remove('hidden-menu');
+          mobileMenu.classList.add('visible-menu');
+          hamburgerIcon.src = 'https://c.animaapp.com/mmutncexOHyleR/assets/icon-10.svg';
+        } else {
+          mobileMenu.classList.remove('visible-menu');
+          mobileMenu.classList.add('hidden-menu');
+          hamburgerIcon.src = 'https://c.animaapp.com/mmutncexOHyleR/assets/icon-9.svg';
+        }
+      });
+
+      // Close mobile menu on link click
+      document.querySelectorAll('.mobile-nav-link').forEach(function(link) {
+        link.addEventListener('click', function() {
+          menuOpen = false;
+          mobileMenu.classList.remove('visible-menu');
+          mobileMenu.classList.add('hidden-menu');
+          hamburgerIcon.src = 'https://c.animaapp.com/mmutncexOHyleR/assets/icon-9.svg';
+        });
+      });
+
+      // ─────────────────────────────────────────
+      // SCROLL REVEAL
+      // ─────────────────────────────────────────
+      var revealObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.reveal').forEach(function(el) {
+        revealObserver.observe(el);
+      });
+
+      // ─────────────────────────────────────────
+      // COUNT-UP ON SCROLL
+      // ─────────────────────────────────────────
+      function animateCount(el) {
+        var target = parseFloat(el.dataset.target);
+        var suffix = el.dataset.suffix || '';
+        var duration = 1200;
+        var start = null;
+        function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+        function step(ts) {
+          if (!start) start = ts;
+          var progress = Math.min((ts - start) / duration, 1);
+          var value = Math.floor(easeOut(progress) * target);
+          if (target >= 1000000) {
+            el.textContent = value.toLocaleString() + suffix;
+          } else {
+            el.textContent = value + suffix;
+          }
+          if (progress < 1) requestAnimationFrame(step);
+          else {
+            if (target >= 1000000) el.textContent = target.toLocaleString() + suffix;
+            else el.textContent = target + suffix;
+          }
+        }
+        requestAnimationFrame(step);
+      }
+
+      var countObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            animateCount(entry.target);
+            countObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.4 });
+
+      document.querySelectorAll('.count-num').forEach(function(el) {
+        el.textContent = '0';
+        countObserver.observe(el);
+      });
+
+      // ─────────────────────────────────────────
+      // OSS SIDEBAR TABS
+      // ─────────────────────────────────────────
+      var ossTabBtns = document.querySelectorAll('.oss-tab');
+      var ossCards = document.querySelectorAll('.oss-product-card');
+      var products = ['viteplus','vite','vitest','rolldown','oxc'];
+
+      // Tracks which card is centered in the viewport, syncs sidebar
+      function getVisibleProduct() {
+        var result = null;
+        var minDist = Infinity;
+        ossCards.forEach(function(card) {
+          var rect = card.getBoundingClientRect();
+          var mid = rect.top + rect.height / 2;
+          var dist = Math.abs(mid - window.innerHeight / 2);
+          if (dist < minDist) {
+            minDist = dist;
+            result = card.dataset.productCard;
+          }
+        });
+        return result;
+      }
+
+      function setActiveTab(productId) {
+        ossTabBtns.forEach(function(btn) {
+          var li = btn.closest('li');
+          if (btn.dataset.product === productId) {
+            btn.classList.add('oss-tab-active');
+            li.classList.remove('opacity-40','grayscale-[1]');
+            li.style.filter = '';
+            li.style.opacity = '';
+          } else {
+            btn.classList.remove('oss-tab-active');
+            li.classList.add('opacity-40');
+            li.style.filter = 'grayscale(1)';
+          }
+        });
+      }
+
+      // Sidebar tap — smooth scroll to product
+      ossTabBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var target = document.querySelector('[data-product-card="' + btn.dataset.product + '"]');
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setActiveTab(btn.dataset.product);
+          }
+        });
+      });
+
+      // Sync on scroll
+      window.addEventListener('scroll', function() {
+        var visible = getVisibleProduct();
+        if (visible) setActiveTab(visible);
+      }, { passive: true });
+
+      setActiveTab('viteplus');
+
+      // ─────────────────────────────────────────
+      // BLOG CAROUSEL
+      // ─────────────────────────────────────────
+      var carouselOl = document.getElementById('carousel-ol');
+      var dotsOl = document.getElementById('carousel-dots');
+      var carouselItems = carouselOl ? carouselOl.querySelectorAll('li') : [];
+      var totalItems = carouselItems.length;
+      var currentSlide = 0;
+
+      function getCardWidth() {
+        var isMd = window.innerWidth >= 768;
+        return isMd ? 352 : 316; // card + gap
+      }
+
+      function buildDots() {
+        if (!dotsOl) return;
+        dotsOl.innerHTML = '';
+        for (var i = 0; i < totalItems; i++) {
+          var li = document.createElement('li');
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.setAttribute('aria-label', 'Navigate to slide ' + (i + 1));
+          btn.className = 'block h-2 w-2 rounded-full transition-colors p-0';
+          btn.style.backgroundColor = i === currentSlide ? '#18181b' : '#e4e4e7';
+          (function(idx) {
+            btn.addEventListener('click', function() { goToSlide(idx); });
+          })(i);
+          li.appendChild(btn);
+          dotsOl.appendChild(li);
+        }
+      }
+
+      function goToSlide(idx) {
+        currentSlide = Math.max(0, Math.min(idx, totalItems - 1));
+        var offset = currentSlide * getCardWidth();
+        carouselOl.style.transform = 'translateX(-' + offset + 'px)';
+        updateDots();
+      }
+
+      function updateDots() {
+        if (!dotsOl) return;
+        var btns = dotsOl.querySelectorAll('button');
+        btns.forEach(function(b, i) {
+          b.style.backgroundColor = i === currentSlide ? '#18181b' : '#e4e4e7';
+        });
+      }
+
+      buildDots();
+
+      // Touch/drag support
+      var touchStartX = 0;
+      var touchEndX = 0;
+      if (carouselOl) {
+        carouselOl.addEventListener('touchstart', function(e) {
+          touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        carouselOl.addEventListener('touchend', function(e) {
+          touchEndX = e.changedTouches[0].screenX;
+          var diff = touchStartX - touchEndX;
+          if (Math.abs(diff) > 40) {
+            if (diff > 0) goToSlide(currentSlide + 1);
+            else goToSlide(currentSlide - 1);
+          }
+        }, { passive: true });
+      }
+
+      window.addEventListener('resize', function() {
+        goToSlide(currentSlide);
+      });
+
+      // ─────────────────────────────────────────
+      // NEWSLETTER FORM
+      // ─────────────────────────────────────────
+      function handleNewsletterSubmit(e) {
+        e.preventDefault();
+        var email = document.getElementById('newsletter-email').value;
+        var msg = document.getElementById('newsletter-msg');
+        var err = document.getElementById('newsletter-err');
+        var btn = document.getElementById('newsletter-btn');
+        msg.classList.add('hidden');
+        err.classList.add('hidden');
+        if (!email || !email.includes('@')) {
+          err.classList.remove('hidden');
+          return;
+        }
+        btn.textContent = '...';
+        btn.disabled = true;
+        setTimeout(function() {
+          btn.textContent = '✓ Done';
+          msg.classList.remove('hidden');
+          document.getElementById('newsletter-email').value = '';
+          setTimeout(function() {
+            btn.textContent = 'Subscribe';
+            btn.disabled = false;
+            msg.classList.add('hidden');
+          }, 3000);
+        }, 800);
+      }
+    </script>
+  </body>
+</html>

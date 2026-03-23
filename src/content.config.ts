@@ -14,6 +14,12 @@ const work = defineCollection({
     contributions: z.array(z.string()),
     clientQuote: z.string(),
     clientLogo: z.string(),
+    clientName: z.string().optional(),
+    clientRole: z.string().optional(),
+    projectLength: z.string().optional(),
+    workSectionDescription: z.string().optional(),
+    productDesignDescription: z.string().optional(),
+    marketingDesignDescription: z.string().optional(),
     order: z.number(),
   }),
 });

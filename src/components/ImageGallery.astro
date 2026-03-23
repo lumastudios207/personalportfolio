@@ -1,0 +1,75 @@
+---
+import TabbedGallery from "./ui/tabbed-gallery.tsx";
+
+interface GallerySection {
+  label: string;
+  title: string;
+  description: string;
+  images: { src: string; alt: string }[];
+  sideImage?: string;
+}
+
+interface Props {
+  // Single section mode
+  images?: { src: string; alt: string }[];
+  company?: string;
+  sectionTitle?: string;
+  sectionDescription?: string;
+  sideImage?: string;
+  // Multi section mode
+  sections?: GallerySection[];
+}
+
+const { images, company, sectionTitle = "Product Design", sectionDescription, sideImage, sections } = Astro.props;
+---
+
+<section class="bg-[var(--color-background)]">
+  <div class="grid-frame-dark">
+    <!-- Section label -->
+    <div class="grid-row-dark no-notches px-6 py-4 md:px-10">
+      <span class="grid-label text-white">Work Samples</span>
+    </div>
+
+    {sections ? (
+      <!-- Multi-section tabbed mode -->
+      <TabbedGallery sections={sections} client:load />
+    ) : (
+      <>
+        <!-- Single section mode -->
+        <div class="grid-row-dark relative flex flex-col gap-5 px-6 pt-8 pb-12 md:px-10 md:pt-10 md:pb-16">
+          {sideImage && (
+            <div class="hidden md:block absolute inset-y-0 right-0 w-[33.333%] overflow-hidden">
+              <img
+                src={sideImage}
+                alt={`${sectionTitle} illustration`}
+                class="h-full w-full object-cover"
+              />
+            </div>
+          )}
+          <div class={sideImage ? "md:w-2/3" : ""}>
+            <h2 class="text-3xl font-medium tracking-[-0.03em] text-white md:text-5xl">
+              {sectionTitle}
+            </h2>
+            {sectionDescription && (
+              <p class="mt-5 max-w-2xl text-base leading-relaxed text-white/70">
+                {sectionDescription}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <!-- Image gallery with dividers -->
+        {images && images.map((img) => (
+          <div class="grid-row-dark bg-white/[0.06]" style="padding: 7.5%;">
+            <img
+              src={img.src}
+              alt={img.alt}
+              class="w-full rounded object-cover"
+              loading="lazy"
+            />
+          </div>
+        ))}
+      </>
+    )}
+  </div>
+</section>

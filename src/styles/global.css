@@ -8,9 +8,9 @@
   /* Colors */
   --color-primary: #FFFFFF;
   --color-accent: #F7C63B;
-  --color-background: #0D0D0D;
+  --color-background: #16171B;
   --color-surface: #F6F4F0;
-  --color-text: #0D0D0D;
+  --color-text: #16171B;
   --color-text-muted: #6D6D6D;
 
   /* Typography */
@@ -28,12 +28,193 @@
    =========================== */
 
 html {
-  background-color: var(--color-background);
-  color: var(--color-primary);
+  background-color: #FFFFFF;
+  color: var(--color-text);
   font-family: var(--font-sans);
 }
 
-/* Headline tracking — apply to text-4xl and above */
-h1, h2, h3 {
-  letter-spacing: var(--tracking-headline);
+/* Focus-visible — accessible keyboard focus ring */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Headline tracking — only at text-4xl (2.25rem) and above per SPEC.md §3 */
+h1, h2, h3, h4, h5, h6 {
+  &:where(.text-4xl, .text-5xl, .text-6xl, .text-7xl, .text-8xl, .text-9xl) {
+    letter-spacing: var(--tracking-headline);
+  }
+}
+
+/* ===========================
+   Bordered Grid Layout System
+   Adapted from cloned site reference
+   =========================== */
+
+/* Main framed container — visible side borders on desktop */
+.grid-frame {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  border-left: 1px solid rgba(0, 0, 0, 0.18);
+  border-right: 1px solid rgba(0, 0, 0, 0.18);
+}
+
+@media (max-width: 767px) {
+  .grid-frame {
+    border-left: none;
+    border-right: none;
+  }
+}
+
+/* Section row — horizontal separator */
+.grid-row {
+  border-top: 1px solid rgba(0, 0, 0, 0.18);
+  position: relative;
+}
+
+/* Corner notch decorations — solid triangles pointing inward at intersections */
+.grid-row::before,
+.grid-row::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  width: 6px;
+  height: 10px;
+  background: rgba(0, 0, 0, 0.18);
+}
+.grid-row::before {
+  left: -1px;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+.grid-row::after {
+  right: -1px;
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+@media (max-width: 767px) {
+  .grid-row::before,
+  .grid-row::after {
+    display: none;
+  }
+}
+
+/* Vertical divider between columns */
+.grid-divider {
+  border-left: 1px solid rgba(0, 0, 0, 0.18);
+}
+
+/* Dark variant — for sections on dark background */
+.grid-frame-dark {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  border-left: 1px solid rgba(255, 255, 255, 0.14);
+  border-right: 1px solid rgba(255, 255, 255, 0.14);
+}
+@media (max-width: 767px) {
+  .grid-frame-dark {
+    border-left: none;
+    border-right: none;
+  }
+}
+.grid-row-dark {
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  position: relative;
+}
+.grid-row-dark::before,
+.grid-row-dark::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  width: 6px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.14);
+}
+.grid-row-dark::before {
+  left: -1px;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+.grid-row-dark::after {
+  right: -1px;
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+@media (max-width: 767px) {
+  .grid-row-dark::before,
+  .grid-row-dark::after {
+    display: none;
+  }
+}
+.grid-divider-dark {
+  border-left: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+/* ===========================
+   shadcn/ui CSS Variables
+   Mapped to project palette
+   =========================== */
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 9% 10%;
+    --card: 40 25% 95%;
+    --card-foreground: 222 9% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 9% 10%;
+    --primary: 44 92% 60%;
+    --primary-foreground: 0 0% 4%;
+    --secondary: 222 9% 16%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 43%;
+    --muted-foreground: 0 0% 43%;
+    --accent: 44 92% 60%;
+    --accent-foreground: 0 0% 4%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 0% / 0.18;
+    --input: 0 0% 0% / 0.18;
+    --ring: 44 92% 60%;
+    --radius: 0.5rem;
+  }
+}
+
+/* Aurora background — color variables and animation */
+:root {
+  --white: #F6F4F0;
+  --black: #16171B;
+  --transparent: transparent;
+  --amber-200: #fde68a;
+  --amber-300: #fcd34d;
+  --yellow-200: #fef08a;
+  --yellow-300: #fde047;
+  --orange-200: #fed7aa;
+}
+
+@keyframes aurora {
+  from {
+    background-position: 50% 50%, 50% 50%;
+  }
+  to {
+    background-position: 350% 50%, 350% 50%;
+  }
+}
+
+/* Hide corner notches at dark/light transitions */
+.no-notches::before,
+.no-notches::after {
+  display: none !important;
+}
+
+/* Hide only the left notch */
+.no-left-notch::before {
+  display: none !important;
+}
+
+/* Section label — small uppercase tag */
+.grid-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }

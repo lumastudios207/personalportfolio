@@ -1,7 +1,93 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import ProcessSteps from "../components/ui/process-steps.tsx";
+import myTools from "../assets/mytools.png";
+
+const engagementRules = [
+  {
+    number: "01",
+    title: "Flat-fee Service Model",
+    description: "I never lock my clients into long term-contracts or waste time on scope meetings and change orders. Instead, I offer a low-commitment subscription to my services that you can scale up or down as needed.",
+  },
+  {
+    number: "02",
+    title: "Collaborative Workflow",
+    description: "Great products are never built in a vacuum, so I'll collaborate closely with your team and learn directly from end-users to help us achieve outstanding results together.",
+  },
+  {
+    number: "03",
+    title: "Timely Status Updates",
+    description: "I'm available on Slack during EST business hours, and I provide daily updates to keep you in the loop and involved in the process. Weekly stand-ups and presentations usually happen over Hangouts or Zoom.",
+  },
+];
 ---
 
 <BaseLayout title="Design Process — Ivan Annikov">
-  <!-- Process page: Nav, Heading, Body Copy, Footer -->
+  <Nav activePage="process" />
+  <main>
+
+    <!-- Hero -->
+    <section>
+      <div class="grid-frame">
+        <div class="grid-row no-notches relative bg-[var(--color-surface)] px-6 pt-5 pb-5 md:px-10 md:pt-6 md:pb-6">
+          <div class="flex flex-col gap-10 md:flex-row md:items-center md:justify-between">
+            <div class="md:w-2/3">
+              <h1 class="mb-4 text-4xl font-bold tracking-[-0.03em] text-[var(--color-text)] md:text-6xl">
+                How I Work
+              </h1>
+              <p class="max-w-2xl text-lg leading-relaxed text-[var(--color-text-muted)]">
+                I design and build software products — from early strategy through production-ready components. The process below is how I consistently get there: a proven workflow refined over years of working with startups and technical product teams, paired with a clear engagement model so you always know what to expect.
+              </p>
+            </div>
+            <div class="hidden md:flex md:w-1/3 items-center justify-start">
+              <img src={myTools.src} alt="Design tools" class="max-h-[440px] w-auto object-contain -ml-[25px]" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Design Process Steps -->
+    <section class="bg-[var(--color-background)]">
+      <div class="grid-frame-dark">
+        <div class="grid-row-dark no-notches px-6 py-4 md:px-10">
+          <span class="grid-label text-white">Design Process</span>
+        </div>
+
+        <ProcessSteps client:load />
+      </div>
+    </section>
+
+    <!-- Rules of Engagement -->
+    <section>
+      <div class="grid-frame">
+        <div class="grid-row no-notches bg-[var(--color-surface)] px-6 py-4 md:px-10">
+          <span class="grid-label text-[var(--color-text)]">Rules of Engagement</span>
+        </div>
+
+        <div class="grid-row grid grid-cols-1 md:grid-cols-3">
+          {engagementRules.map((rule, i) => (
+            <div class:list={[
+              "flex flex-col gap-4 p-6 md:p-10",
+              i > 0 && "border-t border-black/[0.18] md:border-t-0 md:grid-divider",
+            ]}>
+              <span class="text-[20px] font-medium text-[var(--color-accent)]">
+                {rule.number}
+              </span>
+              <h3 class="text-[20px] font-medium leading-tight text-[var(--color-text)]">
+                {rule.title}
+              </h3>
+              <p class="text-[16px] leading-relaxed text-[var(--color-text-muted)]">
+                {rule.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <Footer />
 </BaseLayout>

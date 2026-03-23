@@ -1,0 +1,86 @@
+---
+import MobileMenu from "./MobileMenu.tsx";
+import ContactModal from "./ui/contact-modal.tsx";
+import logoSrc from "../assets/mylogo.svg";
+
+interface Props {
+  activePage?: "work" | "process" | "contact";
+}
+
+const { activePage = "work" } = Astro.props;
+
+const navLinks = [
+  { href: "/", label: "Work", id: "work" as const },
+  { href: "/process", label: "Process", id: "process" as const },
+];
+
+const calendlyUrl = "https://calendly.com/iannikov/call-with-ivan-about-design";
+---
+
+<header
+  id="site-nav"
+  class="fixed top-0 left-0 right-0 z-50 transition-[background-color,box-shadow] duration-300"
+>
+  <div class="mx-auto flex max-w-[var(--container-max)] items-center justify-between px-6 py-5 md:px-10">
+    <!-- Logo -->
+    <a href="/" class="relative z-50 transition-opacity hover:opacity-80">
+      <img
+        src={logoSrc.src}
+        alt="Ivan Annikov"
+        class="h-8"
+      />
+    </a>
+
+    <!-- Desktop nav -->
+    <nav class="hidden items-center gap-8 lg:flex">
+      {navLinks.map((link) => (
+        activePage === link.id ? (
+          <span class="text-sm font-medium tracking-wide uppercase text-[var(--color-text)]">
+            {link.label}
+          </span>
+        ) : (
+          <a
+            href={link.href}
+            class="text-sm font-medium tracking-wide uppercase transition-colors text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
+          >
+            {link.label}
+          </a>
+        )
+      ))}
+      <ContactModal client:load />
+      <a
+        href={calendlyUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rounded-md bg-[var(--color-accent)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text)] transition-opacity hover:opacity-90"
+      >
+        Schedule a Call
+      </a>
+    </nav>
+
+    <!-- Mobile menu (React island) -->
+    <MobileMenu client:load />
+  </div>
+</header>
+
+<!-- Spacer + grid connector: sits in document flow, bridges nav to hero -->
+<div class="grid-frame">
+  <div class="h-[72px]"></div>
+</div>
+
+<script>
+  const nav = document.getElementById("site-nav");
+  if (nav) {
+    const onScroll = () => {
+      if (window.scrollY > 50) {
+        nav.style.backgroundColor = "#FFFFFF";
+        nav.style.boxShadow = "0 1px 0 rgba(0,0,0,0.18)";
+      } else {
+        nav.style.backgroundColor = "transparent";
+        nav.style.boxShadow = "none";
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
+</script>

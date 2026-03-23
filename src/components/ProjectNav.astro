@@ -1,0 +1,48 @@
+---
+import { getCollection } from "astro:content";
+
+interface Props {
+  currentOrder: number;
+}
+
+const { currentOrder } = Astro.props;
+
+const allWork = await getCollection("work");
+const sorted = allWork.sort((a, b) => a.data.order - b.data.order);
+
+const currentIndex = sorted.findIndex((e) => e.data.order === currentOrder);
+const prev = currentIndex > 0 ? sorted[currentIndex - 1] : sorted[sorted.length - 1];
+const next = currentIndex < sorted.length - 1 ? sorted[currentIndex + 1] : sorted[0];
+---
+
+<section>
+  <div class="grid-frame bg-[var(--color-surface)]">
+    <div class="grid-row no-notches grid grid-cols-2">
+      <!-- Previous project -->
+      <a
+        href={`/work/${prev.id}`}
+        class="group flex flex-col gap-3 p-6 transition-all hover:bg-white md:p-10"
+      >
+        <span class="text-xs font-medium uppercase tracking-[0.08em] text-[var(--color-text-muted)]">
+          &larr; Previous
+        </span>
+        <span class="text-lg font-medium text-[var(--color-text)] transition-colors group-hover:text-[var(--color-accent)] md:text-xl">
+          {prev.data.company}
+        </span>
+      </a>
+
+      <!-- Next project -->
+      <a
+        href={`/work/${next.id}`}
+        class="group flex flex-col items-end gap-3 border-l border-black/[0.18] p-6 text-right transition-all hover:bg-white md:p-10"
+      >
+        <span class="text-xs font-medium uppercase tracking-[0.08em] text-[var(--color-text-muted)]">
+          Next &rarr;
+        </span>
+        <span class="text-lg font-medium text-[var(--color-text)] transition-colors group-hover:text-[var(--color-accent)] md:text-xl">
+          {next.data.company}
+        </span>
+      </a>
+    </div>
+  </div>
+</section>

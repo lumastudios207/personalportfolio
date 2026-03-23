@@ -1,6 +1,213 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+import CaseStudyHero from "../../components/CaseStudyHero.astro";
+import ClientPullQuote from "../../components/ClientPullQuote.astro";
+import ImageGallery from "../../components/ImageGallery.astro";
+import ProjectNav from "../../components/ProjectNav.astro";
+
+// CorePilot images
+import cp01 from "../../assets/work/corepilot/corepilot resized/01.png";
+import cp02 from "../../assets/work/corepilot/corepilot resized/02.png";
+import cp03 from "../../assets/work/corepilot/corepilot resized/03.png";
+import cp04 from "../../assets/work/corepilot/corepilot resized/04.png";
+import cp05 from "../../assets/work/corepilot/corepilot resized/05.png";
+import cp06 from "../../assets/work/corepilot/corepilot resized/06.png";
+import cp07 from "../../assets/work/corepilot/corepilot resized/07.png";
+import cp08 from "../../assets/work/corepilot/corepilot resized/08.png";
+import cpSideImage from "../../assets/work/corepilot/product-design-side.png";
+
+// Upwave images
+import uw01 from "../../assets/work/upwave/upwave resized/01.png";
+import uw02 from "../../assets/work/upwave/upwave resized/02.png";
+import uw03 from "../../assets/work/upwave/upwave resized/03.png";
+import uw04 from "../../assets/work/upwave/upwave resized/04.png";
+import uw05 from "../../assets/work/upwave/upwave resized/05.png";
+import uwSideImage from "../../assets/work/upwave/product-design-side.png";
+
+// StellarAero images
+import st01 from "../../assets/work/stellar/stellar resized/01.png";
+import st02 from "../../assets/work/stellar/stellar resized/02.png";
+import st03 from "../../assets/work/stellar/stellar resized/03.png";
+import st04 from "../../assets/work/stellar/stellar resized/04.png";
+import st05 from "../../assets/work/stellar/stellar resized/05.png";
+import st06 from "../../assets/work/stellar/stellar resized/06.png";
+import st07 from "../../assets/work/stellar/stellar resized/07.png";
+import stSideImage from "../../assets/work/stellar/product-design-side.png";
+
+// Splitero images
+import sp_pd01 from "../../assets/work/splitero/product-design/01.png";
+import sp_pd02 from "../../assets/work/splitero/product-design/02.png";
+import sp_pd03 from "../../assets/work/splitero/product-design/03.png";
+import sp_pd04 from "../../assets/work/splitero/product-design/04.png";
+import sp_md01 from "../../assets/work/splitero/marketing-design/01.png";
+import sp_md02 from "../../assets/work/splitero/marketing-design/02.png";
+import sp_md03 from "../../assets/work/splitero/marketing-design/03.png";
+import sp_md04 from "../../assets/work/splitero/marketing-design/04.png";
+import spSideImage from "../../assets/work/splitero/product-design-side.png";
+import spMdSideImage from "../../assets/work/splitero/marketing-design-side.png";
+
+// Secureframe images (4 product, 6 marketing)
+import sf_pd01 from "../../assets/work/secureframe/product-design/01.png";
+import sf_pd02 from "../../assets/work/secureframe/product-design/02.png";
+import sf_pd03 from "../../assets/work/secureframe/product-design/03.png";
+import sf_pd04 from "../../assets/work/secureframe/product-design/04.png";
+import sf_md01 from "../../assets/work/secureframe/marketing-design/01.png";
+import sf_md02 from "../../assets/work/secureframe/marketing-design/02.png";
+import sf_md03 from "../../assets/work/secureframe/marketing-design/03.png";
+import sf_md04 from "../../assets/work/secureframe/marketing-design/04.png";
+import sf_md05 from "../../assets/work/secureframe/marketing-design/05.png";
+import sf_md06 from "../../assets/work/secureframe/marketing-design/06.png";
+import sfSideImage from "../../assets/work/secureframe/product-design-side.png";
+import sfMdSideImage from "../../assets/work/secureframe/marketing-design-side.png";
+
+// Constructo images (4 product, 5 marketing)
+import co_pd01 from "../../assets/work/constructo/product-design/01.png";
+import co_pd02 from "../../assets/work/constructo/product-design/02.png";
+import co_pd03 from "../../assets/work/constructo/product-design/03.png";
+import co_pd04 from "../../assets/work/constructo/product-design/04.png";
+import co_md01 from "../../assets/work/constructo/marketing-design/01.png";
+import co_md02 from "../../assets/work/constructo/marketing-design/02.png";
+import co_md03 from "../../assets/work/constructo/marketing-design/03.png";
+import co_md04 from "../../assets/work/constructo/marketing-design/04.png";
+import co_md05 from "../../assets/work/constructo/marketing-design/05.png";
+import coSideImage from "../../assets/work/constructo/product-design-side.png";
+import coMdSideImage from "../../assets/work/constructo/marketing-design-side.png";
+
+// ScreenSteps images (5 product)
+import ss_pd01 from "../../assets/work/screensteps/product-design/01.png";
+import ss_pd02 from "../../assets/work/screensteps/product-design/02.png";
+import ss_pd03 from "../../assets/work/screensteps/product-design/03.png";
+import ss_pd04 from "../../assets/work/screensteps/product-design/04.png";
+import ss_pd05 from "../../assets/work/screensteps/product-design/05.png";
+import ssSideImage from "../../assets/work/screensteps/product-design-side.png";
+
+// Client logos for quote panels
+import corepilotLogoWhite from "../../assets/Client Logos/corepilot.svg";
+import upwaveLogoWhite from "../../assets/Client Logos/upwave.svg";
+import spliteroLogoWhite from "../../assets/Client Logos/splitero.svg";
+import secureframeLogoWhite from "../../assets/Client Logos/securefrmae.svg";
+import constructoLogoWhite from "../../assets/Client Logos/constructo.png";
+import screenstepsLogoWhite from "../../assets/Client Logos/screensteps-white.svg";
+
+// Single-section project images (product design only)
+const projectImages: Record<string, { src: string; alt: string }[]> = {
+  corepilot: [
+    { src: cp01.src, alt: "CorePilot design 1" },
+    { src: cp02.src, alt: "CorePilot design 2" },
+    { src: cp03.src, alt: "CorePilot design 3" },
+    { src: cp04.src, alt: "CorePilot design 4" },
+    { src: cp05.src, alt: "CorePilot design 5" },
+    { src: cp06.src, alt: "CorePilot design 6" },
+    { src: cp07.src, alt: "CorePilot design 7" },
+    { src: cp08.src, alt: "CorePilot design 8" },
+  ],
+  upwave: [
+    { src: uw01.src, alt: "Upwave design 1" },
+    { src: uw02.src, alt: "Upwave design 2" },
+    { src: uw03.src, alt: "Upwave design 3" },
+    { src: uw04.src, alt: "Upwave design 4" },
+    { src: uw05.src, alt: "Upwave design 5" },
+  ],
+  stellar: [
+    { src: st01.src, alt: "StellarAero design 1" },
+    { src: st02.src, alt: "StellarAero design 2" },
+    { src: st03.src, alt: "StellarAero design 3" },
+    { src: st04.src, alt: "StellarAero design 4" },
+    { src: st05.src, alt: "StellarAero design 5" },
+    { src: st06.src, alt: "StellarAero design 6" },
+    { src: st07.src, alt: "StellarAero design 7" },
+  ],
+  screensteps: [
+    { src: ss_pd01.src, alt: "ScreenSteps design 1" },
+    { src: ss_pd02.src, alt: "ScreenSteps design 2" },
+    { src: ss_pd03.src, alt: "ScreenSteps design 3" },
+    { src: ss_pd04.src, alt: "ScreenSteps design 4" },
+    { src: ss_pd05.src, alt: "ScreenSteps design 5" },
+  ],
+};
+
+// Multi-section project images (product design + marketing design)
+const projectSections: Record<string, { pdImages: { src: string; alt: string }[]; mdImages: { src: string; alt: string }[]; mdSideImage?: string }> = {
+  splitero: {
+    pdImages: [
+      { src: sp_pd01.src, alt: "Splitero product design 1" },
+      { src: sp_pd02.src, alt: "Splitero product design 2" },
+      { src: sp_pd03.src, alt: "Splitero product design 3" },
+      { src: sp_pd04.src, alt: "Splitero product design 4" },
+    ],
+    mdImages: [
+      { src: sp_md01.src, alt: "Splitero marketing design 1" },
+      { src: sp_md02.src, alt: "Splitero marketing design 2" },
+      { src: sp_md03.src, alt: "Splitero marketing design 3" },
+      { src: sp_md04.src, alt: "Splitero marketing design 4" },
+    ],
+    mdSideImage: spMdSideImage.src,
+  },
+  secureframe: {
+    pdImages: [
+      { src: sf_pd01.src, alt: "Secureframe product design 1" },
+      { src: sf_pd02.src, alt: "Secureframe product design 2" },
+      { src: sf_pd03.src, alt: "Secureframe product design 3" },
+      { src: sf_pd04.src, alt: "Secureframe product design 4" },
+    ],
+    mdImages: [
+      { src: sf_md01.src, alt: "Secureframe marketing design 1" },
+      { src: sf_md02.src, alt: "Secureframe marketing design 2" },
+      { src: sf_md03.src, alt: "Secureframe marketing design 3" },
+      { src: sf_md04.src, alt: "Secureframe marketing design 4" },
+      { src: sf_md05.src, alt: "Secureframe marketing design 5" },
+      { src: sf_md06.src, alt: "Secureframe marketing design 6" },
+    ],
+    mdSideImage: sfMdSideImage.src,
+  },
+  constructo: {
+    pdImages: [
+      { src: co_pd01.src, alt: "Constructo product design 1" },
+      { src: co_pd02.src, alt: "Constructo product design 2" },
+      { src: co_pd03.src, alt: "Constructo product design 3" },
+      { src: co_pd04.src, alt: "Constructo product design 4" },
+    ],
+    mdImages: [
+      { src: co_md01.src, alt: "Constructo marketing design 1" },
+      { src: co_md02.src, alt: "Constructo marketing design 2" },
+      { src: co_md03.src, alt: "Constructo marketing design 3" },
+      { src: co_md04.src, alt: "Constructo marketing design 4" },
+      { src: co_md05.src, alt: "Constructo marketing design 5" },
+    ],
+    mdSideImage: coMdSideImage.src,
+  },
+};
+
+const projectSideImages: Record<string, string> = {
+  corepilot: cpSideImage.src,
+  upwave: uwSideImage.src,
+  stellar: stSideImage.src,
+  splitero: spSideImage.src,
+  secureframe: sfSideImage.src,
+  constructo: coSideImage.src,
+  screensteps: ssSideImage.src,
+};
+
+const projectQuotePanels: Record<string, string> = {
+  corepilot: "/images/work/corepilot-quote-panel.png",
+  upwave: "/images/work/upwave-quote-panel.png",
+  splitero: "/images/work/splitero-quote-panel.png",
+  secureframe: "/images/work/secureframe-quote-panel.png",
+  constructo: "/images/work/constructo-quote-panel.png",
+  screensteps: "/images/work/screensteps-quote-panel.png",
+};
+
+const projectQuoteLogos: Record<string, string> = {
+  corepilot: corepilotLogoWhite.src,
+  upwave: upwaveLogoWhite.src,
+  splitero: spliteroLogoWhite.src,
+  secureframe: secureframeLogoWhite.src,
+  constructo: constructoLogoWhite.src,
+  screensteps: screenstepsLogoWhite.src,
+};
 
 export async function getStaticPaths() {
   const work = await getCollection("work");
@@ -11,8 +218,76 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { company, location, description, previewImage, workTypes, contributions, clientQuote, clientLogo, clientName, clientRole, projectLength, workSectionDescription, productDesignDescription, marketingDesignDescription, order } = entry.data;
+
+const images = projectImages[entry.id] || [];
+const sideImage = projectSideImages[entry.id] || undefined;
+const quotePanelImage = projectQuotePanels[entry.id] || undefined;
+const quoteLogoWhite = projectQuoteLogos[entry.id] || undefined;
+const quoteLogoSizes: Record<string, string> = {
+  corepilot: "h-[56px] max-w-[180px]",
+  secureframe: "h-[62px] max-w-[200px]",
+  splitero: "h-[56px] max-w-[180px]",
+  upwave: "h-[54px] max-w-[170px]",
+  constructo: "h-16 max-w-[224px]",
+  screensteps: "h-[60px] max-w-[195px]",
+};
+const quoteLogoSize = quoteLogoSizes[entry.id] || "h-16";
+
+// Build tabbed sections for multi-type projects
+const sectionData = projectSections[entry.id];
+const gallerySections = sectionData ? [
+  {
+    label: "Product Design",
+    title: "Product Design",
+    description: productDesignDescription || "",
+    images: sectionData.pdImages,
+    sideImage: sideImage,
+  },
+  {
+    label: "Marketing Design",
+    title: "Marketing Design",
+    description: marketingDesignDescription || "",
+    images: sectionData.mdImages,
+    sideImage: sectionData.mdSideImage,
+  },
+] : undefined;
 ---
 
-<BaseLayout title={`${entry.data.company} — Ivan Annikov`}>
-  <!-- Case study page: Nav, Hero, Pull Quote, Work Sections, Project Nav, Footer -->
+<BaseLayout title={`${company} — Ivan Annikov`}>
+  <Nav activePage="work" />
+  <main>
+    <CaseStudyHero
+      company={company}
+      location={location}
+      description={description}
+      previewImage={previewImage}
+      workTypes={workTypes}
+      contributions={contributions}
+      projectLength={projectLength}
+    />
+
+    {clientQuote && !clientQuote.startsWith("[") && (
+      <ClientPullQuote
+        quote={clientQuote}
+        clientLogo={clientLogo}
+        company={company}
+        authorName={clientName}
+        authorRole={clientRole}
+        quotePanelImage={quotePanelImage}
+        quoteLogoWhite={quoteLogoWhite}
+        quoteLogoSize={quoteLogoSize}
+      />
+    )}
+
+    {gallerySections ? (
+      <ImageGallery sections={gallerySections} />
+    ) : images.length > 0 ? (
+      <ImageGallery images={images} company={company} sectionTitle="Product Design" sectionDescription={workSectionDescription} sideImage={sideImage} />
+    ) : null}
+
+    <ProjectNav currentOrder={order} />
+  </main>
+  <Footer />
 </BaseLayout>

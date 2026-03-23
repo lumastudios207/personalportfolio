@@ -87,3 +87,8 @@ After each session, before moving on, run this:
 Review everything built so far against SPEC.md. 
 List any deviations, missing pieces, or decisions you made 
 that aren't explicitly covered in the spec.
+
+SPEC.md is updated regularly. At the start of every session, 
+re-read it in full even if you have prior context. 
+Always treat the current SPEC.md as the source of truth 
+over any previous session's decisions.

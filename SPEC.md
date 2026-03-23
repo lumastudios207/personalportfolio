@@ -138,18 +138,51 @@ Sections in order:
 - **Layout:** Full-bleed, typographic-forward. Name is the dominant visual element —
   displayed in large, bold, full-width type (uppercase, IBM Plex Sans 700, tight tracking).
   Portrait photo of Ivan integrated into the layout (overlaid on or between the name letterforms,
-  or positioned alongside). Title and subtitle as secondary supporting text, smaller scale.
-- **Elements (in order of visual hierarchy):**
-  1. **Full name** — `IVAN ANNIKOV` — massive display type, near full viewport width
-  2. **Portrait photo** — high quality, cut-out or duotone treatment. Integrated with name type.
-  3. **Title** — `[TITLE]` e.g. "Fractional Product Designer" — IBM Plex Sans 500, muted color
-  4. **Subtitle** — `[SUBTITLE]` — one short sentence, `--color-text-muted`, smaller size
-- **Visual reference:** `/design-refs/screenshots/hero-ref.png` — editorial layout with
-  oversized name, portrait photo layered into composition, minimal supporting text.
-  Adapt color palette to dark background (`#0D0D0D`) and white/accent type.
+  or positioned alongside). All supporting text below is typographically art-directed —
+  no chips, badges, or UI elements.
 - **Height:** Minimum `100vh`
-- **Note for Claude Code:** The name treatment should feel magazine/editorial —
-  letterforms large enough to nearly span the full viewport width at desktop.
+
+##### Elements (in order of visual hierarchy):
+
+**1. Full name**
+- Text: `IVAN ANNIKOV`
+- Style: IBM Plex Sans 700, uppercase, `letter-spacing: -0.03em`
+- Size: Massive display type — letterforms large enough to nearly span full viewport width at desktop
+- Color: `--color-primary` (#FFFFFF)
+
+**2. Portrait photo**
+- High quality, cut-out (no background) or duotone treatment
+- Integrated with name type — layered into the composition, not floating separately
+- File: `[HERO PORTRAIT — /src/assets/ivan-hero.png]`
+
+**3. Title**
+- Text: `I design software products and build systems that close the gap between design and engineering.`
+- Style: IBM Plex Sans 400, sentence case, normal tracking
+- Size: Medium — clearly subordinate to the name but readable at a glance
+- Color: `--color-primary` (#FFFFFF)
+
+**4. Short bio paragraph**
+- Text: `I've spent 15 years turning complex workflows into products people enjoy using. I work across the full design stack — research, UI, and coded prototypes — so handoffs to engineering are never a bottleneck. I layer in AI to accelerate exploration, and Storybook to deliver production-ready components. Tighter loop, faster iteration, less lost in translation.`
+- Style: IBM Plex Sans 400, normal tracking, relaxed line-height (`leading-relaxed`)
+- Size: Small — supporting copy, clearly tertiary in the hierarchy
+- Color: `--color-text-muted` (#6D6D6D)
+
+**5. Credential line — Treatment B (typographic, editorial)**
+- Text: `AI-AUGMENTED WORKFLOWS   ·   FIGMA TO STORYBOOK DELIVERY   ·   FAST ITERATION CYCLES`
+- Style: IBM Plex Sans 500, **uppercase**, wide letter-spacing (`letter-spacing: 0.12em`)
+- Size: Small — same scale as the bio paragraph or slightly smaller
+- Color: `--color-primary` (#FFFFFF)
+- Separator: `·` centered dot, colored `--color-accent` (#F7C63B)
+- **Rule:** Thin horizontal rule (`1px`, `--color-text-muted` at 30% opacity) sits
+  directly **above** the credential line, full width of the text block
+- **Note for Claude Code:** The rule + spaced caps treatment should feel like a magazine
+  kicker or editorial byline — Swiss/modernist in character. The accent separator is the
+  only use of `#F7C63B` in the hero.
+
+##### Visual reference
+`/design-refs/screenshots/hero-ref.png` — editorial layout with oversized name and portrait.
+Adapt palette to dark background (`#0D0D0D`). When in doubt, favor more whitespace and
+typographic restraint over decoration.
 
 #### 3. How I Help Section
 - Sits directly below the hero — first content section after the identity statement
