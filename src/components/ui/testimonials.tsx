@@ -112,12 +112,20 @@ const testimonials: Testimonial[] = [
   },
 ]
 
-// Three testimonials per page
-const ITEMS_PER_PAGE = 3
-const pages: Testimonial[][] = []
-for (let i = 0; i < testimonials.length; i += ITEMS_PER_PAGE) {
-  pages.push(testimonials.slice(i, i + ITEMS_PER_PAGE))
+// Desktop: 3 per page, Mobile: 2 per page
+const DESKTOP_PER_PAGE = 3
+const MOBILE_PER_PAGE = 2
+
+function buildPages(perPage: number): Testimonial[][] {
+  const result: Testimonial[][] = []
+  for (let i = 0; i < testimonials.length; i += perPage) {
+    result.push(testimonials.slice(i, i + perPage))
+  }
+  return result
 }
+
+const desktopPages = buildPages(DESKTOP_PER_PAGE)
+const mobilePages = buildPages(MOBILE_PER_PAGE)
 
 function SplitText({ text }: { text: string }) {
   const words = text.split(" ")
@@ -179,7 +187,21 @@ function TestimonialCard({ t }: { t: Testimonial }) {
 export function Testimonial() {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const check = () => {
+      const mobile = window.innerWidth < 768
+      setIsMobile(mobile)
+      setActiveIndex(0)
+    }
+    check()
+    window.addEventListener("resize", check)
+    return () => window.removeEventListener("resize", check)
+  }, [])
+
+  const pages = isMobile ? mobilePages : desktopPages
 
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
@@ -268,15 +290,15 @@ export function Testimonial() {
         </motion.div>
       </motion.div>
 
-      {/* Three-column testimonial cards — fixed height container */}
-      <div className="relative h-[480px] md:h-[340px]">
+      {/* Three-column testimonial cards — auto height on mobile, fixed on desktop */}
+      <div className="relative min-h-0 md:h-[340px]">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeIndex}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.15 } }}
-            className="absolute inset-0 grid grid-cols-1 gap-8 overflow-hidden md:grid-cols-3 md:gap-0"
+            className="md:absolute md:inset-0 grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-0"
           >
             {currentPage.map((t, i) => (
               <div
