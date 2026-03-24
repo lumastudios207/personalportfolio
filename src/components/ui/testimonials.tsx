@@ -269,7 +269,7 @@ export function Testimonial() {
       </motion.div>
 
       {/* Three-column testimonial cards — fixed height container */}
-      <div className="relative h-[480px] md:h-[340px]">
+      <div className="relative h-[580px] md:h-[340px]">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeIndex}

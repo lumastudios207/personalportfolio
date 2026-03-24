@@ -101,15 +101,19 @@ export default function ProcessSteps() {
 
   return (
     <div>
-      {/* Tab navigation */}
-      <div className="relative flex border-t border-white/[0.14]">
+      {/* Tab navigation — 2x2 grid on mobile, row on desktop */}
+      <div className="relative grid grid-cols-2 md:flex border-t border-white/[0.14]">
         <CornerNotches />
         {steps.map((step, i) => (
           <button
             key={i}
             onClick={() => setActiveStep(i)}
-            className={`relative flex items-center gap-2 px-4 py-4 text-sm font-medium uppercase tracking-[0.08em] transition-colors md:px-8 ${
-              i > 0 ? "-ml-[10px]" : ""
+            className={`relative flex items-center justify-center gap-2 px-4 py-4 text-sm font-medium uppercase tracking-[0.08em] transition-colors md:justify-start md:px-8 ${
+              i > 0 ? "md:-ml-[10px]" : ""
+            } ${
+              i >= 2 ? "border-t border-white/[0.14] md:border-t-0" : ""
+            } ${
+              i % 2 !== 0 ? "border-l border-white/[0.14] md:border-l-0" : ""
             } ${
               i === activeStep
                 ? "text-[#6D6D6D]"
@@ -127,15 +131,15 @@ export default function ProcessSteps() {
         ))}
       </div>
 
-      {/* Step content — fixed height based on tallest tab (Create with 5 bullets) */}
-      <div className="relative flex border-t border-white/[0.14] md:min-h-[330px]">
+      {/* Step content — stacked on mobile, side-by-side on desktop */}
+      <div className="relative flex flex-col md:flex-row border-t border-white/[0.14] md:min-h-[330px]">
         <CornerNotches />
 
         {/* Full-height vertical divider */}
         <div className="hidden md:block absolute inset-y-0 right-[39%] w-px bg-white/[0.14] z-[1]" />
 
-        {/* Left: title + description + icon */}
-        <div className="md:w-[61%] p-6 md:p-10 flex flex-col relative overflow-hidden">
+        {/* Title + description */}
+        <div className="w-full md:w-[61%] p-6 md:p-10 flex flex-col relative overflow-hidden">
           <img
             src={processBg.src}
             alt=""
@@ -149,8 +153,8 @@ export default function ProcessSteps() {
           </p>
         </div>
 
-        {/* Right: chips cloud */}
-        <div className="md:w-[39%] flex items-center p-6 md:pl-10 md:pr-8 md:py-10 border-t border-white/[0.14] md:border-t-0">
+        {/* Chips — below on mobile, right side on desktop */}
+        <div className="w-full md:w-[39%] flex items-center p-6 md:pl-10 md:pr-8 md:py-10 border-t border-white/[0.14] md:border-t-0">
           <div className="flex flex-wrap items-center gap-3">
             {active.bullets.map((bullet, i) => (
               <span
