@@ -3,7 +3,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 import ProcessSteps from "../components/ui/process-steps.tsx";
-import myTools from "../assets/mytools.png";
 
 const engagementRules = [
   {
@@ -31,20 +30,13 @@ const engagementRules = [
     <!-- Hero -->
     <section>
       <div class="grid-frame">
-        <div class="grid-row no-notches relative bg-[var(--color-surface)] px-6 pt-5 pb-5 md:px-10 md:pt-6 md:pb-6">
-          <div class="flex flex-col gap-10 md:flex-row md:items-center md:justify-between">
-            <div class="md:w-2/3">
-              <h1 class="mb-4 text-4xl font-bold tracking-[-0.03em] text-[var(--color-text)] md:text-6xl">
-                How I Work
-              </h1>
-              <p class="max-w-2xl text-lg leading-relaxed text-[var(--color-text-muted)]">
-                I design and build software products — from early strategy through production-ready components. The process below is how I consistently get there: a proven workflow refined over years of working with startups and technical product teams, paired with a clear engagement model so you always know what to expect.
-              </p>
-            </div>
-            <div class="hidden md:flex md:w-1/3 items-center justify-start">
-              <img src={myTools.src} alt="Design tools" class="max-h-[440px] w-auto object-contain -ml-[25px]" />
-            </div>
-          </div>
+        <div class="grid-row no-notches relative bg-[var(--color-surface)] px-6 pt-10 pb-16 md:px-10 md:pt-16 md:pb-24">
+          <h1 class="mb-4 text-4xl font-bold tracking-[-0.03em] text-[var(--color-text)] md:text-6xl">
+            How I Work
+          </h1>
+          <p class="max-w-4xl text-lg leading-relaxed text-[var(--color-text-muted)]">
+            I design and build software products — from early strategy through production-ready components. The process below is how I consistently get there: a proven workflow refined over years of working with startups and technical product teams, paired with a clear engagement model so you always know what to expect.
+          </p>
         </div>
       </div>
     </section>
