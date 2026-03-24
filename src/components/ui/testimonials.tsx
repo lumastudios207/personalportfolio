@@ -195,7 +195,7 @@ export function Testimonial() {
   useEffect(() => {
     if (paused || isHovered) return
     const timer = setInterval(() => {
-      setActiveIndex((p) => (p + 1) % pages.length)
+      setActiveIndex((p) => (p + 1) % desktopPages.length)
     }, 8000)
     return () => clearInterval(timer)
   }, [paused, isHovered, activeIndex])
@@ -218,14 +218,14 @@ export function Testimonial() {
   )
 
   const handleNext = () => {
-    handleManualNav((activeIndex + 1) % pages.length)
+    handleManualNav((activeIndex + 1) % desktopPages.length)
   }
 
   // Keyboard support
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") handleManualNav((activeIndex + 1) % pages.length)
-      if (e.key === "ArrowLeft") handleManualNav((activeIndex - 1 + pages.length) % pages.length)
+      if (e.key === "ArrowRight") handleManualNav((activeIndex + 1) % desktopPages.length)
+      if (e.key === "ArrowLeft") handleManualNav((activeIndex - 1 + desktopPages.length) % desktopPages.length)
     }
     window.addEventListener("keydown", handler)
     return () => window.removeEventListener("keydown", handler)
