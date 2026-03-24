@@ -112,11 +112,14 @@ const testimonials: Testimonial[] = [
   },
 ]
 
-// Three testimonials per page
-const ITEMS_PER_PAGE = 3
-const pages: Testimonial[][] = []
-for (let i = 0; i < testimonials.length; i += ITEMS_PER_PAGE) {
-  pages.push(testimonials.slice(i, i + ITEMS_PER_PAGE))
+// Desktop: 3 per page, Mobile: 2 per page
+const desktopPages: Testimonial[][] = []
+for (let i = 0; i < testimonials.length; i += 3) {
+  desktopPages.push(testimonials.slice(i, i + 3))
+}
+const mobilePages: Testimonial[][] = []
+for (let i = 0; i < testimonials.length; i += 2) {
+  mobilePages.push(testimonials.slice(i, i + 2))
 }
 
 function SplitText({ text }: { text: string }) {
@@ -228,87 +231,136 @@ export function Testimonial() {
     return () => window.removeEventListener("keydown", handler)
   }, [])
 
-  const currentPage = pages[activeIndex]
+  const [mobileIndex, setMobileIndex] = useState(0)
+
+  const handleMobileNav = (index: number) => {
+    setMobileIndex(index)
+    setPaused(true)
+    setTimeout(() => setPaused(false), 20000)
+  }
+
+  const desktopPage = desktopPages[activeIndex]
+  const mobilePage = mobilePages[mobileIndex]
 
   return (
-    <div
-      ref={containerRef}
-      className="relative cursor-none px-2 py-12 md:px-0 md:py-16"
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={handleNext}
-    >
-      {/* Custom magnetic cursor */}
-      <motion.div
-        className="pointer-events-none absolute z-50 hidden md:block"
-        style={{
-          x: cursorX,
-          y: cursorY,
-          translateX: "-50%",
-          translateY: "-50%",
-        }}
+    <>
+      {/* ===== MOBILE ===== */}
+      <div
+        className="px-2 py-12 md:hidden"
+        onClick={() => handleMobileNav((mobileIndex + 1) % mobilePages.length)}
       >
+        {/* Cards — normal flow, auto height */}
+        <div className="flex flex-col gap-8">
+          {mobilePage.map((t, i) => (
+            <div
+              key={`m-${mobileIndex}-${i}`}
+              className={i > 0 ? "border-t border-black/[0.18] pt-8" : ""}
+            >
+              <TestimonialCard t={t} />
+            </div>
+          ))}
+        </div>
+
+        {/* Dot navigation */}
+        <div className="mt-10 flex items-center justify-center gap-3">
+          {mobilePages.map((_, i) => (
+            <button
+              key={i}
+              onClick={(e) => {
+                e.stopPropagation()
+                handleMobileNav(i)
+              }}
+              aria-label={`Go to testimonials page ${i + 1}`}
+              className={`transition-all ${
+                i === mobileIndex
+                  ? "h-2.5 w-2.5 bg-[var(--color-text)]"
+                  : "h-2.5 w-2.5 bg-black/20 hover:bg-black/40"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* ===== DESKTOP ===== */}
+      <div
+        ref={containerRef}
+        className="relative hidden cursor-none py-16 md:block"
+        onMouseMove={handleMouseMove}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onClick={handleNext}
+      >
+        {/* Custom magnetic cursor */}
         <motion.div
-          className="flex items-center justify-center rounded-full bg-[var(--color-accent)]/90"
-          animate={{
-            width: isHovered ? 72 : 0,
-            height: isHovered ? 72 : 0,
-            opacity: isHovered ? 1 : 0,
+          className="pointer-events-none absolute z-50"
+          style={{
+            x: cursorX,
+            y: cursorY,
+            translateX: "-50%",
+            translateY: "-50%",
           }}
-          transition={{ type: "spring", damping: 20, stiffness: 200 }}
         >
-          <motion.span
-            className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-text)]"
-            animate={{ opacity: isHovered ? 1 : 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            Next
-          </motion.span>
-        </motion.div>
-      </motion.div>
-
-      {/* Three-column testimonial cards — fixed height container */}
-      <div className="relative h-[680px] md:h-[340px]">
-        <AnimatePresence mode="wait">
           <motion.div
-            key={activeIndex}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.15 } }}
-            className="absolute inset-0 grid grid-cols-1 gap-8 overflow-hidden md:grid-cols-3 md:gap-0"
-          >
-            {currentPage.map((t, i) => (
-              <div
-                key={`${activeIndex}-${i}`}
-                className={`${i > 0 ? "border-t border-black/[0.18] pt-8 md:border-l md:border-t-0 md:pl-8 md:pt-0" : ""} ${i < currentPage.length - 1 ? "md:pr-8" : ""}`}
-              >
-                <TestimonialCard t={t} />
-              </div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* Dot navigation */}
-      <div className="mt-12 flex items-center justify-center gap-3">
-        {pages.map((_, i) => (
-          <button
-            key={i}
-            onClick={(e) => {
-              e.stopPropagation()
-              handleManualNav(i)
+            className="flex items-center justify-center rounded-full bg-[var(--color-accent)]/90"
+            animate={{
+              width: isHovered ? 72 : 0,
+              height: isHovered ? 72 : 0,
+              opacity: isHovered ? 1 : 0,
             }}
-            aria-label={`Go to testimonials page ${i + 1}`}
-            className={`transition-all ${
-              i === activeIndex
-                ? "h-2.5 w-2.5 bg-[var(--color-text)]"
-                : "h-2.5 w-2.5 bg-black/20 hover:bg-black/40"
-            }`}
-          />
-        ))}
+            transition={{ type: "spring", damping: 20, stiffness: 200 }}
+          >
+            <motion.span
+              className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-text)]"
+              animate={{ opacity: isHovered ? 1 : 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              Next
+            </motion.span>
+          </motion.div>
+        </motion.div>
+
+        {/* Three-column testimonial cards — fixed height */}
+        <div className="relative h-[340px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIndex}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, transition: { duration: 0.15 } }}
+              className="absolute inset-0 grid grid-cols-3"
+            >
+              {desktopPage.map((t, i) => (
+                <div
+                  key={`${activeIndex}-${i}`}
+                  className={`${i > 0 ? "border-l border-black/[0.18] pl-8" : ""} ${i < desktopPage.length - 1 ? "pr-8" : ""}`}
+                >
+                  <TestimonialCard t={t} />
+                </div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Dot navigation */}
+        <div className="mt-12 flex items-center justify-center gap-3">
+          {desktopPages.map((_, i) => (
+            <button
+              key={i}
+              onClick={(e) => {
+                e.stopPropagation()
+                handleManualNav(i)
+              }}
+              aria-label={`Go to testimonials page ${i + 1}`}
+              className={`transition-all ${
+                i === activeIndex
+                  ? "h-2.5 w-2.5 bg-[var(--color-text)]"
+                  : "h-2.5 w-2.5 bg-black/20 hover:bg-black/40"
+              }`}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
