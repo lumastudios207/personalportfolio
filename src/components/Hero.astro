@@ -27,13 +27,22 @@ import myPicture from "../assets/mypicture.png";
       <div class="md:w-2/3">
         <!-- Name + mobile portrait inline -->
         <div class="mb-6 flex items-center gap-4">
-          <img src={myPicture.src} alt="Ivan Annikov" class="h-20 w-auto object-contain md:hidden" />
-          <h1 class="text-3xl font-bold leading-none tracking-[-0.03em] text-[var(--color-text)] md:text-5xl">
-            Hi, I'm Ivan.
-          </h1>
+          <img src={myPicture.src} alt="Ivan Annikov" class="h-20 w-auto shrink-0 object-contain md:hidden" />
+          <div class="flex flex-col">
+            <h1 class="text-3xl font-bold leading-none tracking-[-0.03em] text-[var(--color-text)] md:text-5xl">
+              Hi, I'm Ivan.
+            </h1>
+            <!-- Location — mobile (under name, next to photo) -->
+            <p class="mt-2 flex items-start gap-1.5 text-[17px] leading-snug text-[var(--color-text-muted)] md:hidden">
+              <svg class="mt-1 h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" />
+              </svg>
+              <span>Working remotely<br/>from Portland, Maine</span>
+            </p>
+          </div>
         </div>
-        <!-- Location -->
-        <p class="mb-5 flex items-center gap-1.5 text-xs text-[var(--color-text-muted)] md:text-[20px]">
+        <!-- Location — desktop -->
+        <p class="mb-5 hidden items-center gap-1.5 text-[20px] text-[var(--color-text-muted)] md:flex">
           <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" />
           </svg>
