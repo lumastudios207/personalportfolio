@@ -177,6 +177,24 @@ export default function ContactForm() {
       >
         {status === "submitting" ? "Sending..." : "Send Message"}
       </button>
+
+      {/* Schedule a call — mobile only */}
+      <div className="mt-6 rounded-md border border-black/[0.1] bg-[var(--color-surface)] px-5 py-6 text-center md:hidden">
+        <p className="mb-3 text-base text-[var(--color-text-muted)]">
+          Prefer a conversation? Schedule a free discovery call to discuss your project.
+        </p>
+        <a
+          href="https://calendly.com/iannikov/call-with-ivan-about-design"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center gap-2 rounded-md border border-[var(--color-accent)] bg-[var(--color-accent)]/30 px-5 py-2.5 text-sm font-semibold text-[var(--color-text)] transition-colors hover:bg-[var(--color-accent)]/50"
+        >
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+          </svg>
+          Schedule a Call
+        </a>
+      </div>
     </form>
   )
 }
