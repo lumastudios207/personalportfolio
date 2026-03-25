@@ -30,7 +30,7 @@ export default function ServicePanels() {
           variant="corners"
           className="border-white/[0.14] bg-white/[0.06]"
         >
-          <CardContent className="flex flex-col gap-4 p-6 md:p-8">
+          <CardContent className="flex flex-col gap-4 p-3 md:p-4">
             <span className="text-sm font-medium text-[var(--color-accent)]">
               {panel.number}
             </span>
