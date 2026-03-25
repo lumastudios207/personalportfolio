@@ -76,6 +76,9 @@ import co_md05 from "../../assets/work/constructo/marketing-design/05.png";
 import coSideImage from "../../assets/work/constructo/product-design-side.png";
 import coMdSideImage from "../../assets/work/constructo/marketing-design-side.png";
 
+// Shared section header image (same as Featured Projects on homepage)
+import sharedSideImage from "../../assets/selected-projects-img.png";
+
 // ScreenSteps images (5 product)
 import ss_pd01 from "../../assets/work/screensteps/product-design/01.png";
 import ss_pd02 from "../../assets/work/screensteps/product-design/02.png";
@@ -144,7 +147,7 @@ const projectSections: Record<string, { pdImages: { src: string; alt: string }[]
       { src: sp_md03.src, alt: "Splitero marketing design 3" },
       { src: sp_md04.src, alt: "Splitero marketing design 4" },
     ],
-    mdSideImage: spMdSideImage.src,
+    mdSideImage: sharedSideImage.src,
   },
   secureframe: {
     pdImages: [
@@ -161,7 +164,7 @@ const projectSections: Record<string, { pdImages: { src: string; alt: string }[]
       { src: sf_md05.src, alt: "Secureframe marketing design 5" },
       { src: sf_md06.src, alt: "Secureframe marketing design 6" },
     ],
-    mdSideImage: sfMdSideImage.src,
+    mdSideImage: sharedSideImage.src,
   },
   constructo: {
     pdImages: [
@@ -177,18 +180,18 @@ const projectSections: Record<string, { pdImages: { src: string; alt: string }[]
       { src: co_md04.src, alt: "Constructo marketing design 4" },
       { src: co_md05.src, alt: "Constructo marketing design 5" },
     ],
-    mdSideImage: coMdSideImage.src,
+    mdSideImage: sharedSideImage.src,
   },
 };
 
 const projectSideImages: Record<string, string> = {
-  corepilot: cpSideImage.src,
-  upwave: uwSideImage.src,
-  stellar: stSideImage.src,
-  splitero: spSideImage.src,
-  secureframe: sfSideImage.src,
-  constructo: coSideImage.src,
-  screensteps: ssSideImage.src,
+  corepilot: sharedSideImage.src,
+  upwave: sharedSideImage.src,
+  stellar: sharedSideImage.src,
+  splitero: sharedSideImage.src,
+  secureframe: sharedSideImage.src,
+  constructo: sharedSideImage.src,
+  screensteps: sharedSideImage.src,
 };
 
 const projectQuotePanels: Record<string, string> = {
@@ -228,8 +231,8 @@ const quoteLogoWhite = projectQuoteLogos[entry.id] || undefined;
 const quoteLogoSizes: Record<string, string> = {
   corepilot: "h-[56px] max-w-[180px]",
   secureframe: "h-[62px] max-w-[200px]",
-  splitero: "h-[56px] max-w-[180px]",
-  upwave: "h-[54px] max-w-[170px]",
+  splitero: "h-[72px] max-w-[220px] brightness-0 invert",
+  upwave: "h-[64px] max-w-[200px]",
   constructo: "h-16 max-w-[224px]",
   screensteps: "h-[60px] max-w-[195px]",
 };
