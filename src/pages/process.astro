@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 import ProcessSteps from "../components/ui/process-steps.tsx";
+import processHeroImg from "../assets/process-hero-img.png";
 
 const engagementRules = [
   {
@@ -31,12 +32,17 @@ const engagementRules = [
     <section>
       <div class="grid-frame">
         <div class="grid-row no-notches relative bg-[var(--color-surface)] px-6 pt-10 pb-16 md:px-10 md:pt-16 md:pb-24">
-          <h1 class="mb-4 text-4xl font-bold tracking-[-0.03em] text-[var(--color-text)] md:text-6xl">
-            How I Work
-          </h1>
-          <p class="max-w-4xl text-lg leading-relaxed text-[var(--color-text-muted)]">
-            I design and build software products — from early strategy through production-ready components. The process below is how I consistently get there: a proven workflow refined over years of working with startups and technical product teams, paired with a clear engagement model so you always know what to expect.
-          </p>
+          <div class="hidden md:block absolute inset-0 overflow-hidden">
+            <img src={processHeroImg.src} alt="" class="absolute right-0 top-0 h-full w-auto object-cover" />
+          </div>
+          <div class="relative z-10">
+            <h1 class="mb-4 text-4xl font-bold tracking-[-0.03em] text-[var(--color-text)] md:text-6xl">
+              How I Work
+            </h1>
+            <p class="max-w-3xl text-lg leading-relaxed text-[var(--color-text-muted)]">
+              I design and build software products — from early strategy through production-ready components. The process below is how I consistently get there: a proven workflow refined over years of working with startups and technical product teams, paired with a clear engagement model so you always know what to expect.
+            </p>
+          </div>
         </div>
       </div>
     </section>
