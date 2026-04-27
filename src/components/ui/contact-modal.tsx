@@ -253,7 +253,7 @@ export default function ContactModal() {
                     <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-black/[0.18] pt-6">
                       <div className="flex flex-wrap items-center gap-5">
                         <a
-                          href="/resume.pdf"
+                          href="/ivan-annikov-resume-2026.pdf"
                           download
                           className="flex items-center gap-1.5 text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]"
                         >
