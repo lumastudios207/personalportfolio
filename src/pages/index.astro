@@ -6,9 +6,10 @@ import HowIHelp from "../components/HowIHelp.astro";
 import Testimonials from "../components/Testimonials.astro";
 import CaseStudyGrid from "../components/CaseStudyGrid.astro";
 import Footer from "../components/Footer.astro";
+import { DEFAULT_TITLE, DEFAULT_DESCRIPTION } from "../lib/site";
 ---
 
-<BaseLayout title="Ivan Annikov — Fractional Product Designer">
+<BaseLayout title={DEFAULT_TITLE} description={DEFAULT_DESCRIPTION}>
   <Nav activePage="work" />
   <main>
     <Hero />

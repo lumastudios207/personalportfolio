@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { AnimatePresence, motion } from "framer-motion"
+import { CV_PATH } from "../../lib/site"
 
 interface FormData {
   name: string
@@ -253,14 +254,15 @@ export default function ContactModal() {
                     <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-black/[0.18] pt-6">
                       <div className="flex flex-wrap items-center gap-5">
                         <a
-                          href="/ivan-annikov-resume-2026.pdf"
-                          download
+                          href={CV_PATH}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="flex items-center gap-1.5 text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]"
                         >
                           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                           </svg>
-                          Download my CV
+                          View CV
                         </a>
                       </div>
 

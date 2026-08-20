@@ -222,7 +222,12 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const { company, location, description, previewImage, workTypes, contributions, clientQuote, clientLogo, clientName, clientRole, projectLength, workSectionDescription, productDesignDescription, marketingDesignDescription, order } = entry.data;
+const { company, location, description, ogDescription, previewImage, workTypes, contributions, clientQuote, clientLogo, clientName, clientRole, projectLength, workSectionDescription, productDesignDescription, marketingDesignDescription, order } = entry.data;
+
+// Social card copy. `ogDescription` is required and length-capped by the
+// collection schema, so it is used verbatim — no truncation.
+const seoTitle = `${company} — Ivan A. Annikov`;
+const seoDescription = ogDescription;
 
 const images = projectImages[entry.id] || [];
 const sideImage = projectSideImages[entry.id] || undefined;
@@ -258,7 +263,7 @@ const gallerySections = sectionData ? [
 ] : undefined;
 ---
 
-<BaseLayout title={`${company} — Ivan Annikov`}>
+<BaseLayout title={seoTitle} description={seoDescription}>
   <Nav activePage="work" />
   <main>
     <CaseStudyHero

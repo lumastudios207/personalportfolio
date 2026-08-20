@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/ivan-annikov-resume-2026.pdf",
+      "destination": "/ivan-annikov-resume.pdf",
+      "permanent": true
+    }
+  ]
+}
