@@ -7,9 +7,6 @@ const work = defineCollection({
     company: z.string(),
     location: z.string(),
     description: z.string(),
-    // Required. Purpose-written blurb for search results and social share
-    // cards. Hard-capped at 160 chars so it is never truncated mid-sentence.
-    ogDescription: z.string().max(160),
     previewImage: z.string(),
     workTypes: z.array(
       z.enum(["product-design", "marketing-design"])
